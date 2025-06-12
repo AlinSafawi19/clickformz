@@ -567,9 +567,9 @@
                 theme: 'bootstrap-5',
                 width: '100%',
                 placeholder: function () {
-                    return $(this).data('placeholder');
+                    return $('[data-lang="select-service"]').text();
                 },
-                allowClear: true,
+                allowClear: false,
                 minimumResultsForSearch: Infinity
             });
         });
