@@ -197,22 +197,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Function to update active navigation link
     const updateActiveNavLink = () => {
-        const scrollPosition = window.scrollY + 100; // Offset for better UX
+        const scrollPosition = window.scrollY;
+        let currentSection = null;
 
         sections.forEach(section => {
             const sectionTop = section.offsetTop;
             const sectionHeight = section.offsetHeight;
             const sectionId = section.getAttribute('id');
 
-            if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
-                navLinks.forEach(link => {
-                    link.classList.remove('active');
-                    if (link.getAttribute('href') === `#${sectionId}`) {
-                        link.classList.add('active');
-                    }
-                });
+            // Check if the section is in view with a threshold
+            if (scrollPosition >= sectionTop - 150 && scrollPosition < sectionTop + sectionHeight - 150) {
+                currentSection = sectionId;
             }
         });
+
+        // Only update if we have a valid section
+        if (currentSection) {
+            navLinks.forEach(link => {
+                const linkHref = link.getAttribute('href');
+                if (linkHref === `#${currentSection}`) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+        }
     };
 
     // Function to handle laptop mockup parallax
@@ -302,37 +311,36 @@ document.addEventListener('DOMContentLoaded', () => {
         link.addEventListener('click', (e) => {
             e.preventDefault();
             const targetId = link.getAttribute('href');
-
-            // Check if we're on the same page
-            const isSamePage = targetId.startsWith('#');
             const targetSection = document.querySelector(targetId);
 
-            if (isSamePage && targetSection) {
-                // Same page navigation - use smooth scroll
+            if (targetSection) {
+                // Remove active class from all links
                 navLinks.forEach(l => l.classList.remove('active'));
+                // Add active class to clicked link
                 link.classList.add('active');
-                updateHeaderState();
+                
+                // Smooth scroll to target
                 smoothScroll(targetSection);
-            } else {
-                // Cross-page navigation - redirect to the page
-                window.location.href = targetId;
+                
+                // Update URL hash without triggering scroll
+                history.pushState(null, null, targetId);
             }
         });
     });
 
-    // Add scroll event listeners with throttling
-    let ticking = false;
+    // Add scroll event listener with throttling
+    let scrollTimeout;
     window.addEventListener('scroll', () => {
-        if (!ticking) {
-            window.requestAnimationFrame(() => {
-                updateHeaderState();
-                updateActiveNavLink();
-                handleParallax();
-                handleLaptopParallax();
-                ticking = false;
-            });
-            ticking = true;
+        if (scrollTimeout) {
+            window.cancelAnimationFrame(scrollTimeout);
         }
+        
+        scrollTimeout = window.requestAnimationFrame(() => {
+            updateHeaderState();
+            updateActiveNavLink();
+            handleParallax();
+            handleLaptopParallax();
+        });
     });
 
     // Set initial states
@@ -343,10 +351,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Update states on hash change
     window.addEventListener('hashchange', () => {
-        updateHeaderState();
-        updateActiveNavLink();
-        handleParallax();
-        handleLaptopParallax();
+        const hash = window.location.hash;
+        const targetSection = document.querySelector(hash);
+        
+        if (targetSection) {
+            smoothScroll(targetSection);
+            updateActiveNavLink();
+        }
     });
 
     // Initialize phone input
