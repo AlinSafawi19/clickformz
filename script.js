@@ -336,7 +336,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             callback(localStorage.getItem('phone_country'));
                         }
                     })
-                    .catch(() => callback("us"));
+                    .catch(() => callback("lb"));
             }
         });
 
