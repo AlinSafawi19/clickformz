@@ -1184,10 +1184,9 @@ function validateForm() {
 
     // Check each required field
     for (const [fieldId, fieldName] of Object.entries(requiredFields)) {
-        const field = document.getElementById(fieldId);
-        
-        if (field.type === 'radio') {
-            const radioButtons = document.getElementsByName(fieldId);
+        if (fieldId === 'hosting') {
+            // Special handling for radio buttons
+            const radioButtons = document.getElementsByName('hosting');
             const isChecked = Array.from(radioButtons).some(radio => radio.checked);
             
             if (!isChecked) {
@@ -1213,7 +1212,8 @@ function validateForm() {
                 return false;
             }
         } else {
-            if (!field.value.trim()) {
+            const field = document.getElementById(fieldId);
+            if (!field || !field.value.trim()) {
                 Swal.fire({
                     icon: 'error',
                     title: translations[document.documentElement.lang]['required-field'],
@@ -1233,7 +1233,7 @@ function validateForm() {
                         toast.addEventListener('mouseleave', Swal.resumeTimer)
                     }
                 });
-                field.focus();
+                if (field) field.focus();
                 return false;
             }
         }
@@ -1296,38 +1296,85 @@ function validateForm() {
     return true;
 }
 
+// Initialize EmailJS
+(function() {
+    emailjs.init("NxCZGoWrfQBLjkYnf"); // public key
+})();
+
 // Add form submit event listener
 document.getElementById('contact-form').addEventListener('submit', function(e) {
     e.preventDefault();
     
     if (validateForm()) {
-        // Show success message
-        Swal.fire({
-            icon: 'success',
-            title: translations[document.documentElement.lang]['form-submitted'],
-            text: translations[document.documentElement.lang]['thank-you-message'],
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            position: 'top-end',
-            toast: true,
-            width: 'auto',
-            padding: '0.5rem',
-            customClass: {
-                popup: 'colored-toast'
-            },
-            didOpen: (toast) => {
-                toast.addEventListener('mouseenter', Swal.stopTimer)
-                toast.addEventListener('mouseleave', Swal.resumeTimer)
-            },
-            willClose: () => {
-                // Reset form
-                this.reset();
-                // Reset Select2 if it exists
-                if ($('#service').data('select2')) {
-                    $('#service').val('').trigger('change');
-                }
-            }
-        });
+        // Get form data
+        const formData = {
+            to_email: 'alinsafawi19@gmail.com',
+            from_name: `${document.getElementById('firstname').value} ${document.getElementById('lastname').value}`,
+            from_email: document.getElementById('email').value,
+            firstname: document.getElementById('firstname').value,
+            lastname: document.getElementById('lastname').value,
+            email: document.getElementById('email').value,
+            phone: document.getElementById('phone').value,
+            service: document.getElementById('service').value,
+            budget: document.getElementById('budget').value,
+            projectDetails: document.getElementById('project-details').value,
+            website: document.getElementById('website').value,
+            deadline: document.getElementById('deadline').value,
+            hosting: document.querySelector('input[name="hosting"]:checked')?.value,
+            notes: document.getElementById('notes').value,
+            message: `New contact form submission from ${document.getElementById('firstname').value} ${document.getElementById('lastname').value}`
+        };
+
+        // Send email using EmailJS
+        emailjs.send("service_4hi3osc", "template_w1q40ia", formData)
+            .then(function() {
+                // Show success message
+                Swal.fire({
+                    icon: 'success',
+                    title: translations[document.documentElement.lang]['form-submitted'],
+                    text: translations[document.documentElement.lang]['thank-you-message'],
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    position: 'top-end',
+                    toast: true,
+                    width: 'auto',
+                    padding: '0.5rem',
+                    customClass: {
+                        popup: 'colored-toast'
+                    },
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    },
+                    willClose: () => {
+                        // Reset form
+                        e.target.reset();
+                        // Reset Select2 if it exists
+                        if ($('#service').data('select2')) {
+                            $('#service').val('').trigger('change');
+                        }
+                    }
+                });
+            })
+            .catch(function(error) {
+                // Show error message
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Failed to send message. Please try again later.',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    position: 'top-end',
+                    toast: true,
+                    width: 'auto',
+                    padding: '0.5rem',
+                    customClass: {
+                        popup: 'colored-toast'
+                    }
+                });
+                console.error('EmailJS error:', error);
+            });
     }
 }); 
