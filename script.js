@@ -8,16 +8,34 @@ const rejectBtn = document.querySelector('.reject-btn');
 
 // Cookie names
 const COOKIE_CONSENT = 'cookie_consent';
+const SCROLL_POSITION = 'scroll_position';
 
 // Clear all stored data
 function clearStoredData() {
     localStorage.clear();
 }
 
+// Save scroll position
+function saveScrollPosition() {
+    if (localStorage.getItem(COOKIE_CONSENT) === 'true') {
+        localStorage.setItem(SCROLL_POSITION, window.scrollY.toString());
+    }
+}
+
+// Restore scroll position
+function restoreScrollPosition() {
+    const savedPosition = localStorage.getItem(SCROLL_POSITION);
+    if (savedPosition) {
+        window.scrollTo(0, parseInt(savedPosition));
+    }
+}
+
 // Accept cookies
 function acceptCookies() {
     localStorage.setItem(COOKIE_CONSENT, 'true');
     cookieBanner.style.display = 'none';
+    // Save current scroll position when accepting cookies
+    saveScrollPosition();
 }
 
 // Reject cookies
@@ -34,7 +52,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const hasConsent = localStorage.getItem(COOKIE_CONSENT);
     if (hasConsent) {
         cookieBanner.style.display = 'none';
+        // Restore scroll position if consent is given
+        restoreScrollPosition();
     }
+
+    // Add scroll event listener to save position
+    window.addEventListener('scroll', saveScrollPosition);
 
     // Log all local storage values
     console.log('All Local Storage Values:');
