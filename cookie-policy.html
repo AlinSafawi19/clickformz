@@ -104,7 +104,7 @@
 
         <div class="policy-container">
             <h1 data-lang="cookie-policy-title">Cookie Policy</h1>
-            <p class="last-updated" data-lang="last-updated">Last Updated: June 2025</p>
+            <p class="last-updated"><span data-lang="last-updated">Last Updated: </span> <span id="cookie-last-updated-date"></span></p>
 
             <!-- Table of Contents -->
             <div class="table-of-contents">
@@ -251,6 +251,36 @@
     <script src="script.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // Set last updated date
+            const lastUpdatedElement = document.getElementById('cookie-last-updated-date');
+            if (lastUpdatedElement) {
+                const lastUpdatedDate = new Date().toLocaleDateString('en-US', { 
+                    year: 'numeric', 
+                    month: 'long',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: true
+                });
+                lastUpdatedElement.textContent = lastUpdatedDate;
+            }
+
+            // Listen for language changes
+            document.addEventListener('languageChanged', (e) => {
+                const lastUpdatedElement = document.getElementById('cookie-last-updated-date');
+                if (lastUpdatedElement) {
+                    const lastUpdatedDate = new Date().toLocaleDateString(e.detail.lang === 'ar' ? 'ar-EG' : 'en-US', { 
+                        year: 'numeric', 
+                        month: 'long',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        hour12: true
+                    });
+                    lastUpdatedElement.textContent = lastUpdatedDate;
+                }
+            });
+
             const header = document.querySelector('.transparent-header');
 
             // Function to update header state
