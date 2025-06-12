@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClickFormz - Crafting Digital Solutions</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="select2-custom.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/css/intlTelInput.css">
+</head>
+
+<body>
+    <div class="language-loader">
+        <div class="loader-content">
+            <div class="loader-spinner"></div>
+        </div>
+    </div>
+    <header class="transparent-header transparent">
+        <nav>
+            <div class="nav-left">
+                <div class="logo">
+                    <a href="#home">
+                        <img src="logo.png" alt="ClickFormz Logo">
+                    </a>
+                </div>
+                <button type="button" class="menu-toggle" aria-label="Toggle menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="nav-links">
+                    <div class="menu-header">
+                        <button type="button" class="menu-close" aria-label="Close menu">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <ul>
+                        <li><a href="#home" data-lang="home">Home</a></li>
+                        <li><a href="#services" data-lang="services">Services</a></li>
+                        <li><a href="#about" data-lang="about">About</a></li>
+                        <li><a href="#contact" data-lang="contact">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="nav-right">
+                <button type="button" class="search-toggle" aria-label="Search">
+                    <i class="fas fa-search"></i>
+                </button>
+                <div class="language-switcher">
+                    <button class="lang-btn" data-lang="en" type="button">EN</button>
+                    <button class="lang-btn" data-lang="ar" type="button">عربي</button>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="menu-overlay"></div>
+
+    <!-- Search Overlay -->
+    <div class="search-overlay">
+        <div class="search-container">
+            <div class="search-header">
+                <form class="search-form">
+                    <input type="text" class="search-input" placeholder="Search..."
+                        data-lang-placeholder="search-placeholder">
+                    <button type="submit" class="search-submit" aria-label="Submit search"
+                        data-lang-aria-label="submit-search">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </form>
+                <button type="button" class="search-close" aria-label="Close search"
+                    data-lang-aria-label="close-search">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="search-results">
+                <div class="search-categories">
+                    <h3 data-lang="search-categories">Categories</h3>
+                    <div class="category-tags">
+                        <a href="#services" class="category-tag" data-lang="web-applications">Web Applications</a>
+                        <a href="#services" class="category-tag" data-lang="websites">Websites</a>
+                        <a href="#services" class="category-tag" data-lang="ai-chatbots">AI Chatbots</a>
+                        <a href="#services" class="category-tag" data-lang="e-commerce">E-commerce</a>
+                    </div>
+                </div>
+                <div class="recent-searches">
+                    <h3 data-lang="recent-searches">Recent Searches</h3>
+                    <div class="recent-searches-list">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section id="home" class="hero-section">
+        <div class="content">
+            <h1 data-lang="hero-title">Crafting Digital Solutions</h1>
+            <p data-lang="hero-subtitle">Web applications, websites, e-commerce, AI chatbots</p>
+            <a href="#contact" class="btn-primary" data-lang="get-started">Get Started</a>
+        </div>
+        <div class="laptop-mockup"></div>
+    </section>
+    <section id="services">
+        <div class="services-container">
+            <h2 class="section-title" data-lang="services-title"><span>Our Services</span></h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-laptop-code"></i>
+                    </div>
+                    <h3 data-lang="web-dev-title">Web Development</h3>
+                    <p data-lang="web-dev-desc">Custom websites and web applications built with modern technologies and
+                        best practices.</p>
+                    <div class="service-details">
+                        <div class="service-detail-item">
+                            <i class="fas fa-check"></i>
+                            <span data-lang="responsive-design">Responsive Design</span>
+                        </div>
+                        <div class="service-detail-item">
+                            <i class="fas fa-check"></i>
+                            <span data-lang="seo-optimization">SEO Optimization</span>
+                        </div>
+                        <div class="service-detail-item">
+                            <i class="fas fa-check"></i>
+                            <span data-lang="performance">Performance Optimization</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <h3 data-lang="ecommerce-title">E-Commerce</h3>
+                    <p data-lang="ecommerce-desc">Powerful online stores with secure payment systems and inventory
+                        management.</p>
+                    <div class="service-details">
+                        <div class="service-detail-item">
+                            <i class="fas fa-check"></i>
+                            <span data-lang="payment-gateways">Payment Gateways</span>
+                        </div>
+                        <div class="service-detail-item">
+                            <i class="fas fa-check"></i>
+                            <span data-lang="inventory">Inventory Management</span>
+                        </div>
+                        <div class="service-detail-item">
+                            <i class="fas fa-check"></i>
+                            <span data-lang="analytics">Analytics & Reporting</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3 data-lang="ai-title">AI ChatBots</h3>
+                    <p data-lang="ai-desc">Intelligent chatbots and AI-powered features to enhance user experience.</p>
+                    <div class="service-details">
+                        <div class="service-detail-item">
+                            <i class="fas fa-check"></i>
+                            <span data-lang="custom-ai">Custom AI Solutions</span>
+                        </div>
+                        <div class="service-detail-item">
+                            <i class="fas fa-check"></i>
+                            <span data-lang="chatbot">Chatbot Integration</span>
+                        </div>
+                        <div class="service-detail-item">
+                            <i class="fas fa-check"></i>
+                            <span data-lang="automation">Process Automation</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3 data-lang="web-apps-title">Web Apps</h3>
+                    <p data-lang="web-apps-desc">Custom web applications built with modern frameworks and technologies.
+                    </p>
+                    <div class="service-details">
+                        <div class="service-detail-item">
+                            <i class="fas fa-check"></i>
+                            <span data-lang="custom-apps">Custom Applications</span>
+                        </div>
+                        <div class="service-detail-item">
+                            <i class="fas fa-check"></i>
+                            <span data-lang="api-integration">API Integration</span>
+                        </div>
+                        <div class="service-detail-item">
+                            <i class="fas fa-check"></i>
+                            <span data-lang="cloud-solutions">Cloud Solutions</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="about">
+        <div class="parallax-container">
+            <div class="parallax-bg"></div>
+            <div class="about-content">
+                <h2 class="section-title" data-lang="about-title"><span>About Us</span></h2>
+                <div class="about-grid">
+                    <div class="about-text">
+                        <h3 data-lang="about-subtitle">Your Digital Partner</h3>
+                        <p data-lang="about-desc">We are a team of passionate developers and designers dedicated to
+                            creating exceptional digital experiences. With years of expertise in web development,
+                            e-commerce, and AI solutions, we help businesses transform their digital presence.</p>
+                        <div class="stats-container">
+                            <div class="stat-item">
+                                <span class="stat-number">24/7</span>
+                                <span class="stat-label" data-lang="support">Support</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">100%</span>
+                                <span class="stat-label" data-lang="dedication">Dedication</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number"><i class="fas fa-infinity"></i></span>
+                                <span class="stat-label" data-lang="potential">Potential</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="about-image">
+                        <div class="tech-cube">
+                            <div class="cube-face front"></div>
+                            <div class="cube-face back"></div>
+                            <div class="cube-face right"></div>
+                            <div class="cube-face left"></div>
+                            <div class="cube-face top"></div>
+                            <div class="cube-face bottom"></div>
+                        </div>
+                        <div class="orbit-container">
+                            <div class="orbit">
+                                <div class="orbit-circle"></div>
+                                <div class="orbit-circle"></div>
+                                <div class="orbit-circle"></div>
+                            </div>
+                        </div>
+                        <div class="data-particles">
+                            <div class="particle"></div>
+                            <div class="particle"></div>
+                            <div class="particle"></div>
+                            <div class="particle"></div>
+                            <div class="particle"></div>
+                            <div class="particle"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="contact">
+        <div id="particles-js"></div>
+        <div class="contact-container">
+            <h2 class="section-title" data-lang="contact-title"><span>Contact Us</span></h2>
+            <form class="contact-form" id="contact-form">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="firstname"><span data-lang="firstname">First name</span> <span
+                                class="required">*</span></label>
+                        <input type="text" id="firstname" name="firstname" data-lang-placeholder="firstname-placeholder"
+                            placeholder="First name" class="input" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="lastname"><span data-lang="lastname">Last name</span> <span
+                                class="required">*</span></label>
+                        <input type="text" id="lastname" name="lastname" data-lang-placeholder="lastname-placeholder"
+                            placeholder="Last name" class="input" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email"><span data-lang="email">Email</span> <span class="required">*</span></label>
+                        <input type="email" id="email" name="email" data-lang-placeholder="email-placeholder"
+                            placeholder="Email address" class="input" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone" data-lang="phone">Phone</label>
+                        <input type="tel" id="phone" name="phone" data-lang-placeholder="phone-placeholder"
+                            placeholder="Phone number" class="input" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="service"><span data-lang="service">What service are you interested in?</span> <span
+                                class="required">*</span></label>
+                        <select id="service" name="service" class="input" required>
+                            <option value="" disabled selected data-lang="select-service">Select a service</option>
+                            <option value="web-applications" data-lang="web-applications">Web Applications</option>
+                            <option value="websites" data-lang="websites">Websites</option>
+                            <option value="ai-chatbots" data-lang="ai-chatbots">AI Chatbots Development</option>
+                            <option value="e-commerce" data-lang="e-commerce">E-commerce Platform</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="budget"><span data-lang="budget">Budget (USD)</span> <span
+                                class="required">*</span></label>
+                        <input type="text" id="budget" name="budget" data-lang-placeholder="budget-placeholder"
+                            placeholder="Enter your budget" class="input" pattern="^[0-9,]+$" required />
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="project-details"><span data-lang="project-details">In short, what is this project
+                                about?</span> <span class="required">*</span></label>
+                        <textarea id="project-details" name="project-details" rows="4"
+                            data-lang-placeholder="project-details-placeholder" placeholder="Describe your project"
+                            class="input" required></textarea>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="website" data-lang="website">Do you have a current website? If yes, please provide
+                            the URL:</label>
+                        <input type="url" id="website" name="website" data-lang-placeholder="website-placeholder"
+                            placeholder="https://yourwebsite.com" class="input" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="deadline"><span data-lang="deadline">How soon do you need the project
+                                completed?</span> <span class="required">*</span></label>
+                        <input type="text" id="deadline" name="deadline" data-lang-placeholder="deadline-placeholder"
+                            placeholder="Enter your timeline" class="input" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label><span data-lang="hosting">Do you need hosting and email?</span> <span
+                                class="required">*</span></label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="hosting" value="yes" required /> <span
+                                    data-lang="yes">Yes</span></label>
+                            <label><input type="radio" name="hosting" value="no" required /> <span
+                                    data-lang="no">No</span></label>
+                        </div>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="notes" data-lang="notes">Additional notes</label>
+                        <textarea id="notes" name="notes" rows="3" data-lang-placeholder="notes-placeholder"
+                            placeholder="Any extra information" class="input"></textarea>
+                    </div>
+                </div>
+
+                <div class="button-container">
+                    <button type="submit" class="button">
+                        <i class="fas fa-paper-plane"></i> <span data-lang="send">Send</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </section>
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="#home">
+                        <img src="logo.png" alt="ClickFormz Logo" class="footer-logo">
+                    </a>
+                    <p class="footer-description" data-lang="footer-description">Crafting exceptional digital
+                        experiences with cutting-edge technology and innovative solutions.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer-links">
+                    <h3 data-lang="quick-links">Quick Links</h3>
+                    <ul>
+                        <li><a href="#home" data-lang="home">Home</a></li>
+                        <li><a href="#services" data-lang="services">Services</a></li>
+                        <li><a href="#about" data-lang="about">About</a></li>
+                        <li><a href="#contact" data-lang="contact">Contact</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-services">
+                    <h3 data-lang="our-services">Our Services</h3>
+                    <ul>
+                        <li><a href="#services" data-lang="web-applications">Web Applications</a></li>
+                        <li><a href="#services" data-lang="websites">Websites</a></li>
+                        <li><a href="#services" data-lang="ai-chatbots">AI Chatbots</a></li>
+                        <li><a href="#services" data-lang="e-commerce">E-commerce</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-contact">
+                    <h3 data-lang="contact-us">Contact Us</h3>
+                    <div class="contact-info">
+                        <p><i class="fas fa-phone"></i> <a href="tel:+1234567890">+1 (234) 567-890</a></p>
+                        <p><i class="fas fa-envelope"></i> <a href="mailto:info@clickformz.com">info@clickformz.com</a>
+                        </p>
+                        <p><i class="fas fa-globe"></i> <span data-lang="remote-business">Worldwide Service</span></p>
+                    </div>
+                    <div class="footer-cta-container">
+                        <p class="footer-cta-text" data-lang="footer-cta-text">Ready to transform your digital presence?
+                            Let's create something amazing together!</p>
+                        <a href="#contact" class="footer-cta" data-lang="get-started">Get Started</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <div class="footer-legal">
+                    <a href="privacy-policy.html" data-lang="privacy-policy">Privacy Policy</a>
+                    <a href="terms-conditions.html" data-lang="terms-conditions">Terms & Conditions</a>
+                    <a href="cookie-policy.html" data-lang="cookie-policy">Cookie Policy</a>
+                </div>
+                <div class="footer-copyright">
+                    <p>&copy; 2025 ClickFormz. <span data-lang="all-rights-reserved">All rights reserved.</span></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <div class="cookie-banner" id="cookieBanner">
+        <div class="cookie-content">
+            <div class="cookie-header">
+                <p data-lang="cookie-description">We use cookies to enhance your browsing experience. By clicking
+                    "Accept", you consent to our use of necessary cookies. For more information, please read our <a
+                        href="privacy-policy.html" data-lang="privacy-policy">Privacy Policy</a>, <a
+                        href="terms-conditions.html" data-lang="terms-conditions">Terms & Conditions</a>, and <a
+                        href="cookie-policy.html" data-lang="cookie-policy">Cookie Policy</a>.</p>
+            </div>
+            <div class="cookie-buttons">
+                <button type="button" class="cookie-btn reject-btn" data-lang="reject">Reject</button>
+                <button type="button" class="cookie-btn accept-btn" data-lang="accept">Accept</button>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/js/intlTelInput.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#service').select2({
+                theme: 'bootstrap-5',
+                width: '100%',
+                placeholder: function () {
+                    return $(this).data('placeholder');
+                },
+                allowClear: true,
+                minimumResultsForSearch: Infinity
+            });
+
+            // Initialize phone input
+            const phoneInput = window.intlTelInput(document.querySelector("#phone"), {
+                utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/js/utils.js",
+                preferredCountries: ["lb", "us", "gb", "ca", "ae"],
+                separateDialCode: true,
+                initialCountry: localStorage.getItem('phone_country') || "lb",
+                customContainer: "iti-custom",
+                geoIpLookup: function (callback) {
+                    fetch("https://ipapi.co/json")
+                        .then(res => res.json())
+                        .then(data => {
+                            // Only use geoIP if no country is stored
+                            if (!localStorage.getItem('phone_country')) {
+                                callback(data.country_code);
+                            } else {
+                                callback(localStorage.getItem('phone_country'));
+                            }
+                        })
+                        .catch(() => callback("lb"));
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

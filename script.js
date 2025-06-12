@@ -1,0 +1,974 @@
+// Global variables
+let serviceSelect;
+
+// Cookie Consent Management
+const cookieBanner = document.getElementById('cookieBanner');
+const acceptBtn = document.querySelector('.accept-btn');
+const rejectBtn = document.querySelector('.reject-btn');
+
+// Cookie names
+const COOKIE_CONSENT = 'cookie_consent';
+
+// Clear all stored data
+function clearStoredData() {
+    localStorage.clear();
+}
+
+// Accept cookies
+function acceptCookies() {
+    localStorage.setItem(COOKIE_CONSENT, 'true');
+    cookieBanner.style.display = 'none';
+}
+
+// Reject cookies
+function rejectCookies() {
+    localStorage.setItem(COOKIE_CONSENT, 'false');
+    cookieBanner.style.display = 'none';
+}
+
+// Initialize cookie consent
+document.addEventListener('DOMContentLoaded', () => {
+    // Clear any existing stored data
+    clearStoredData();
+
+    // Event listeners for cookie buttons
+    if (acceptBtn) acceptBtn.addEventListener('click', acceptCookies);
+    if (rejectBtn) rejectBtn.addEventListener('click', rejectCookies);
+
+    // Initialize particles.js only if it's available
+    if (typeof particlesJS === 'function') {
+        particlesJS('particles-js', {
+            particles: {
+                number: {
+                    value: 80,
+                    density: {
+                        enable: true,
+                        value_area: 800
+                    }
+                },
+                color: {
+                    value: '#e65c00'
+                },
+                shape: {
+                    type: 'circle'
+                },
+                opacity: {
+                    value: 0.3,
+                    random: true,
+                    anim: {
+                        enable: true,
+                        speed: 1,
+                        opacity_min: 0.1,
+                        sync: false
+                    }
+                },
+                size: {
+                    value: 3,
+                    random: true,
+                    anim: {
+                        enable: true,
+                        speed: 2,
+                        size_min: 0.1,
+                        sync: false
+                    }
+                },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: '#e65c00',
+                    opacity: 0.2,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 1,
+                    direction: 'none',
+                    random: true,
+                    straight: false,
+                    out_mode: 'out',
+                    bounce: false,
+                    attract: {
+                        enable: true,
+                        rotateX: 600,
+                        rotateY: 1200
+                    }
+                }
+            },
+            interactivity: {
+                detect_on: 'canvas',
+                events: {
+                    onhover: {
+                        enable: true,
+                        mode: 'grab'
+                    },
+                    onclick: {
+                        enable: true,
+                        mode: 'push'
+                    },
+                    resize: true
+                },
+                modes: {
+                    grab: {
+                        distance: 140,
+                        line_linked: {
+                            opacity: 0.5
+                        }
+                    },
+                    push: {
+                        particles_nb: 4
+                    }
+                }
+            },
+            retina_detect: true
+        });
+    }
+
+    const navLinks = document.querySelectorAll('.nav-links a');
+    const header = document.querySelector('.transparent-header');
+    const sections = document.querySelectorAll('section');
+    const parallaxBg = document.querySelector('.parallax-bg');
+    const laptopMockup = document.querySelector('.laptop-mockup');
+    const budgetInput = document.getElementById('budget');
+
+    // Function to format budget input with commas
+    const formatBudgetInput = (input) => {
+        // Remove all non-digit characters
+        let value = input.value.replace(/[^\d]/g, '');
+
+        // Add commas for thousands
+        if (value.length > 0) {
+            value = parseInt(value, 10).toLocaleString('en-US');
+        }
+
+        // Update input value
+        input.value = value;
+    };
+
+    // Add input event listener for budget field
+    if (budgetInput) {
+        budgetInput.addEventListener('input', () => formatBudgetInput(budgetInput));
+    }
+
+    // Function to update header state
+    const updateHeaderState = () => {
+        const scrollPosition = window.scrollY;
+
+        if (scrollPosition === 0) {
+            header.classList.add('transparent');
+        } else {
+            header.classList.remove('transparent');
+        }
+    };
+
+    // Function to update active navigation link
+    const updateActiveNavLink = () => {
+        const scrollPosition = window.scrollY + 100; // Offset for better UX
+
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.offsetHeight;
+            const sectionId = section.getAttribute('id');
+
+            if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === `#${sectionId}`) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+        });
+    };
+
+    // Function to handle laptop mockup parallax
+    const handleLaptopParallax = () => {
+        if (laptopMockup) {
+            const scrollPosition = window.scrollY;
+            const heroSection = document.querySelector('.hero-section');
+            const heroTop = heroSection.offsetTop;
+            const heroHeight = heroSection.offsetHeight;
+
+            // Calculate how far we've scrolled through the hero section
+            const scrolled = Math.min(Math.max(scrollPosition - heroTop, 0), heroHeight);
+            const progress = scrolled / heroHeight;
+
+            // Calculate parallax movement
+            const translateY = scrolled * 0.5; // Increased movement
+            const translateZ = -100 + (scrolled * 0.1); // Dynamic Z position
+            const scale = 1.2 + (progress * 0.1); // Dynamic scale
+
+            // Apply transform with dynamic values
+            laptopMockup.style.transform = `translateZ(${translateZ}px) scale(${scale}) translateY(${translateY}px)`;
+
+            // Dynamic opacity based on scroll progress
+            const opacity = 0.7 - (progress * 0.2);
+            laptopMockup.style.opacity = Math.max(0.5, Math.min(0.7, opacity));
+
+            // Add subtle rotation for more depth
+            const rotateX = progress * 2;
+            laptopMockup.style.transform += ` rotateX(${rotateX}deg)`;
+        }
+    };
+
+    // Function to handle about section parallax
+    const handleParallax = () => {
+        if (parallaxBg) {
+            const scrollPosition = window.scrollY;
+            const aboutSection = document.querySelector('#about');
+            const aboutTop = aboutSection.offsetTop;
+            const aboutHeight = aboutSection.offsetHeight;
+
+            if (scrollPosition >= aboutTop - window.innerHeight &&
+                scrollPosition <= aboutTop + aboutHeight) {
+                const scrolled = scrollPosition - aboutTop;
+                const translateY = scrolled * 0.3;
+                const scale = 1.5 + (scrolled * 0.0001);
+
+                parallaxBg.style.transform = `translateZ(-4px) scale(${scale}) translateY(${translateY}px)`;
+
+                const opacity = 1 - (Math.abs(scrolled) * 0.001);
+                parallaxBg.style.opacity = Math.max(0.7, Math.min(1, opacity));
+            }
+        }
+    };
+
+    // Add smooth scroll behavior
+    const smoothScroll = (target) => {
+        if (!target) return; // Exit if target is null or undefined
+
+        const headerHeight = document.querySelector('.transparent-header')?.offsetHeight || 0;
+        const targetPosition = target.offsetTop - headerHeight;
+        const startPosition = window.pageYOffset;
+        const distance = targetPosition - startPosition;
+        const duration = 1000;
+        let start = null;
+
+        function animation(currentTime) {
+            if (start === null) start = currentTime;
+            const timeElapsed = currentTime - start;
+            const run = ease(timeElapsed, startPosition, distance, duration);
+            window.scrollTo(0, run);
+            if (timeElapsed < duration) requestAnimationFrame(animation);
+        }
+
+        // Easing function
+        function ease(t, b, c, d) {
+            t /= d / 2;
+            if (t < 1) return c / 2 * t * t + b;
+            t--;
+            return -c / 2 * (t * (t - 2) - 1) + b;
+        }
+
+        requestAnimationFrame(animation);
+    };
+
+    // Handle navigation clicks with smooth scroll
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetId = link.getAttribute('href');
+
+            // Check if we're on the same page
+            const isSamePage = targetId.startsWith('#');
+            const targetSection = document.querySelector(targetId);
+
+            if (isSamePage && targetSection) {
+                // Same page navigation - use smooth scroll
+                navLinks.forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+                updateHeaderState();
+                smoothScroll(targetSection);
+            } else {
+                // Cross-page navigation - redirect to the page
+                window.location.href = targetId;
+            }
+        });
+    });
+
+    // Add scroll event listeners with throttling
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+        if (!ticking) {
+            window.requestAnimationFrame(() => {
+                updateHeaderState();
+                updateActiveNavLink();
+                handleParallax();
+                handleLaptopParallax();
+                ticking = false;
+            });
+            ticking = true;
+        }
+    });
+
+    // Set initial states
+    updateHeaderState();
+    updateActiveNavLink();
+    handleParallax();
+    handleLaptopParallax();
+
+    // Update states on hash change
+    window.addEventListener('hashchange', () => {
+        updateHeaderState();
+        updateActiveNavLink();
+        handleParallax();
+        handleLaptopParallax();
+    });
+
+    // Initialize phone input
+    const phoneInputField = document.querySelector("#phone");
+    if (phoneInputField && typeof window.intlTelInput === 'function') {
+        window.phoneInput = window.intlTelInput(phoneInputField, {
+            utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/js/utils.js",
+            preferredCountries: ["us", "gb", "ca", "ae"],
+            separateDialCode: true,
+            initialCountry: localStorage.getItem('phone_country') || "auto",
+            customContainer: "iti-custom",
+            geoIpLookup: function (callback) {
+                fetch("https://ipapi.co/json")
+                    .then(res => res.json())
+                    .then(data => {
+                        // Only use geoIP if no country is stored
+                        if (!localStorage.getItem('phone_country')) {
+                            callback(data.country_code);
+                        } else {
+                            callback(localStorage.getItem('phone_country'));
+                        }
+                    })
+                    .catch(() => callback("us"));
+            }
+        });
+
+        // Add event listeners for debugging
+        phoneInputField.addEventListener("countrychange", function () {
+            const countryData = window.phoneInput.getSelectedCountryData();
+            if (countryData && countryData.iso2) {
+                localStorage.setItem('phone_country', countryData.iso2);
+            }
+        });
+
+        // Listen for clicks on the dropdown
+        document.addEventListener("click", function (e) {
+            const countryElement = e.target.closest(".iti__country");
+            if (countryElement) {
+                // Get the country code from the clicked element
+                const countryCode = countryElement.getAttribute("data-country-code");
+
+                if (countryCode) {
+                    localStorage.setItem('phone_country', countryCode);
+                    // Force update the input
+                    window.phoneInput.setCountry(countryCode);
+                }
+            }
+        });
+    }
+
+    // Search Functionality
+    const searchToggle = document.querySelector('.search-toggle');
+    const searchOverlay = document.querySelector('.search-overlay');
+    const searchClose = document.querySelector('.search-close');
+    const searchForm = document.querySelector('.search-form');
+    const searchInput = document.querySelector('.search-input');
+    const recentSearchesList = document.querySelector('.recent-searches-list');
+
+    // Load recent searches from localStorage
+    let recentSearches = JSON.parse(localStorage.getItem('recentSearches')) || [];
+
+    // Update recent searches display
+    function updateRecentSearches() {
+        recentSearchesList.innerHTML = recentSearches
+            .map(search => `
+                <a href="#" class="recent-search-item">
+                    <i class="fas fa-history"></i>
+                    <span>${search}</span>
+                </a>
+            `)
+            .join('');
+    }
+
+    // Initialize recent searches
+    updateRecentSearches();
+
+    // Toggle search overlay
+    searchToggle.addEventListener('click', () => {
+        searchOverlay.classList.add('active');
+        searchInput.focus();
+    });
+
+    searchClose.addEventListener('click', () => {
+        searchOverlay.classList.remove('active');
+    });
+
+    // Close search on escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && searchOverlay.classList.contains('active')) {
+            searchOverlay.classList.remove('active');
+        }
+    });
+
+    // Handle search form submission
+    searchForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const searchTerm = searchInput.value.trim();
+
+        if (searchTerm) {
+            // Add to recent searches (max 5)
+            recentSearches = [searchTerm, ...recentSearches.filter(s => s !== searchTerm)].slice(0, 5);
+            localStorage.setItem('recentSearches', JSON.stringify(recentSearches));
+            updateRecentSearches();
+
+            // Perform search
+            performSearch(searchTerm);
+        }
+    });
+
+    // Handle recent search clicks
+    recentSearchesList.addEventListener('click', (e) => {
+        if (e.target.closest('.recent-search-item')) {
+            e.preventDefault();
+            const searchTerm = e.target.closest('.recent-search-item').querySelector('span').textContent;
+            searchInput.value = searchTerm;
+            performSearch(searchTerm);
+        }
+    });
+
+    // Handle category tag clicks
+    document.querySelectorAll('.category-tag').forEach(tag => {
+        tag.addEventListener('click', (e) => {
+            e.preventDefault();
+            const searchTerm = tag.textContent.trim();
+            searchInput.value = searchTerm;
+            performSearch(searchTerm);
+        });
+    });
+
+    // Search function
+    function performSearch(term) {
+        // First check if it's a category tag
+        const categoryTags = document.querySelectorAll('.category-tag');
+        for (const tag of categoryTags) {
+            if (tag.textContent.toLowerCase().trim() === term.toLowerCase()) {
+                const servicesSection = document.querySelector('#services');
+                if (servicesSection) {
+                    servicesSection.scrollIntoView({ behavior: 'smooth' });
+                    searchOverlay.classList.remove('active');
+                    return;
+                }
+            }
+        }
+
+        // Then check for section matches
+        const sections = {
+            'home': '#home',
+            'services': '#services',
+            'about': '#about',
+            'contact': '#contact'
+        };
+
+        // Direct section match
+        if (sections[term.toLowerCase()]) {
+            const targetSection = document.querySelector(sections[term.toLowerCase()]);
+            if (targetSection) {
+                targetSection.scrollIntoView({ behavior: 'smooth' });
+                searchOverlay.classList.remove('active');
+                return;
+            }
+        }
+
+        // Search through section content
+        const allSections = document.querySelectorAll('section');
+        let bestMatch = null;
+        let bestMatchScore = 0;
+
+        allSections.forEach(section => {
+            let score = 0;
+            const sectionId = section.id;
+            const sectionTitle = section.querySelector('h1, h2, h3');
+            const sectionContent = section.textContent.toLowerCase();
+            const searchTerm = term.toLowerCase();
+
+            // Score based on different criteria
+            if (sectionId === searchTerm) score += 5;
+            if (sectionTitle && sectionTitle.textContent.toLowerCase().includes(searchTerm)) score += 3;
+            if (sectionContent.includes(searchTerm)) score += 1;
+
+            if (score > bestMatchScore) {
+                bestMatchScore = score;
+                bestMatch = section;
+            }
+        });
+
+        // Scroll to the best match or services as fallback
+        if (bestMatch && bestMatchScore > 0) {
+            bestMatch.scrollIntoView({ behavior: 'smooth' });
+        } else {
+            const servicesSection = document.querySelector('#services');
+            if (servicesSection) {
+                servicesSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        searchOverlay.classList.remove('active');
+    }
+
+    // Mobile Menu Toggle
+    const mobileMenuToggle = document.querySelector('.menu-toggle');
+    const mobileMenu = document.querySelector('.nav-links');
+    const menuOverlay = document.querySelector('.menu-overlay');
+    const menuClose = document.querySelector('.menu-close');
+
+    function toggleMobileMenu() {
+        mobileMenu.classList.toggle('active');
+        menuOverlay.classList.toggle('active');
+        document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+    }
+
+    if (mobileMenuToggle) {
+        mobileMenuToggle.addEventListener('click', toggleMobileMenu);
+    }
+
+    if (menuClose) {
+        menuClose.addEventListener('click', toggleMobileMenu);
+    }
+
+    if (menuOverlay) {
+        menuOverlay.addEventListener('click', toggleMobileMenu);
+    }
+
+    // Close menu when clicking on a link
+    const mobileNavLinks = document.querySelectorAll('.nav-links a');
+    mobileNavLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            if (mobileMenu.classList.contains('active')) {
+                toggleMobileMenu();
+            }
+        });
+    });
+
+    // Initialize Select2
+    serviceSelect = $('#service');
+    if (serviceSelect.length) {
+        serviceSelect.select2({
+            theme: 'bootstrap-5',
+            width: '100%',
+            placeholder: function () {
+                return $(this).data('placeholder');
+            },
+            allowClear: true,
+            minimumResultsForSearch: Infinity
+        });
+    }
+});
+
+const translations = {
+    en: {
+        'home': 'Home',
+        'services': 'Services',
+        'about': 'About',
+        'contact': 'Contact',
+        'hero-title': 'Crafting Digital Solutions',
+        'hero-subtitle': 'Web applications, websites, e-commerce, AI chatbots',
+        'get-started': 'Get Started',
+        'services-title': 'Our Services',
+        'web-dev-title': 'Web Development',
+        'web-dev-desc': 'Custom websites and web applications built with modern technologies and best practices.',
+        'ecommerce-title': 'E-Commerce',
+        'ecommerce-desc': 'Powerful online stores with secure payment systems and inventory management.',
+        'ai-title': 'AI ChatBots',
+        'ai-desc': 'Intelligent chatbots and AI-powered features to enhance user experience.',
+        'web-apps-title': 'Web Apps',
+        'web-apps-desc': 'Custom web applications built with modern frameworks and technologies.',
+        'about-title': 'About Us',
+        'about-subtitle': 'Your Digital Partner',
+        'about-desc': 'We are a team of passionate developers and designers dedicated to creating exceptional digital experiences. With years of expertise in web development, e-commerce, and AI solutions, we help businesses transform their digital presence.',
+        'support': 'Support',
+        'dedication': 'Dedication',
+        'potential': 'Potential',
+        'years-exp': 'Years Experience',
+        'projects': 'Projects Completed',
+        'clients': 'Happy Clients',
+        'responsive-design': 'Responsive Design',
+        'seo-optimization': 'SEO Optimization',
+        'performance': 'Performance Optimization',
+        'payment-gateways': 'Payment Gateways',
+        'inventory': 'Inventory Management',
+        'analytics': 'Analytics & Reporting',
+        'custom-ai': 'Custom AI Solutions',
+        'chatbot': 'Chatbot Integration',
+        'automation': 'Process Automation',
+        'custom-apps': 'Custom Applications',
+        'api-integration': 'API Integration',
+        'cloud-solutions': 'Cloud Solutions',
+        'contact-title': 'Contact Us',
+        'firstname': 'First name',
+        'lastname': 'Last name',
+        'email': 'Email',
+        'phone': 'Phone',
+        'service': 'What service are you interested in?',
+        'budget': 'Budget (USD)',
+        'project-details': 'In short, what is this project about?',
+        'website': 'Do you have a current website? If yes, please provide the URL:',
+        'deadline': 'How soon do you need the project completed?',
+        'hosting': 'Do you need hosting and email?',
+        'notes': 'Additional notes',
+        'send': 'Send',
+        'select-service': 'Select a service',
+        'web-applications': 'Web Applications',
+        'websites': 'Websites',
+        'ai-chatbots': 'AI Chatbots Development',
+        'e-commerce': 'E-commerce Platform',
+        'yes': 'Yes',
+        'no': 'No',
+        'firstname-placeholder': 'First name',
+        'lastname-placeholder': 'Last name',
+        'email-placeholder': 'Email address',
+        'phone-placeholder': 'Phone number',
+        'budget-placeholder': 'Enter your budget',
+        'project-details-placeholder': 'Describe your project',
+        'website-placeholder': 'https://yourwebsite.com',
+        'deadline-placeholder': 'Enter your timeline',
+        'notes-placeholder': 'Any extra information',
+        'select2-placeholder': 'Select a service',
+        'quick-links': 'Quick Links',
+        'our-services': 'Our Services',
+        'contact-us': 'Contact Us',
+        'privacy-policy': 'Privacy Policy',
+        'terms-conditions': 'Terms & Conditions',
+        'cookie-policy': 'Cookie Policy',
+        'remote-business': 'Worldwide Service',
+        'all-rights-reserved': 'All rights reserved.',
+        'footer-cta-text': 'Take your business to the next level with our expert digital solutions. Start your journey today!',
+        'search-placeholder': 'Search...',
+        'search-categories': 'Categories',
+        'recent-searches': 'Recent Searches',
+        'submit-search': 'Submit search',
+        'close-search': 'Close search',
+        'cookie-description': 'We use cookies to enhance your browsing experience. By clicking "Accept", you consent to our use of necessary cookies.',
+        'necessary-cookies': 'Necessary Cookies',
+        'necessary-cookies-desc': 'Required for the website to function properly. Cannot be disabled.',
+        'accept': 'Accept',
+        'reject': 'Reject',
+        'footer-description': 'Crafting exceptional digital experiences with cutting-edge technology and innovative solutions.',
+        'cookie-policy-title': 'Cookie Policy',
+        'last-updated': 'Last Updated: June 2025',
+        'what-are-cookies': 'What Are Cookies',
+        'cookies-definition': 'Cookies are small text files that are placed on your computer or mobile device when you visit our website. They are widely used to make websites work more efficiently and provide a better user experience.',
+        'how-we-use-cookies': 'How We Use Cookies',
+        'cookies-usage': 'We use cookies for the following purposes:',
+        'cookies-essential': 'Essential cookies: Required for the website to function properly',
+        'cookies-preferences': 'Preference cookies: Remember your settings and preferences',
+        'cookies-analytics': 'Analytics cookies: Help us understand how visitors interact with our website',
+        'cookies-marketing': 'Marketing cookies: Used to deliver relevant advertisements',
+        'types-of-cookies': 'Types of Cookies We Use',
+        'session-cookies': 'Session Cookies',
+        'session-cookies-desc': 'Temporary cookies that expire when you close your browser. They help maintain your session while using our website.',
+        'persistent-cookies': 'Persistent Cookies',
+        'persistent-cookies-desc': 'Remain on your device for a specified period or until you delete them. They help remember your preferences and settings.',
+        'managing-cookies': 'Managing Cookies',
+        'managing-cookies-desc': 'You can control and manage cookies in your browser settings. However, please note that disabling certain cookies may affect the functionality of our website.',
+        'browser-settings': 'Browser Settings',
+        'chrome-settings': 'Google Chrome',
+        'firefox-settings': 'Mozilla Firefox',
+        'edge-settings': 'Microsoft Edge',
+        'safari-settings': 'Safari',
+        'third-party-cookies': 'Third-Party Cookies',
+        'third-party-cookies-desc': 'We may use third-party services that place cookies on your device. These services help us analyze website usage, provide social media features, and deliver relevant advertisements.',
+        'updates-to-policy': 'Updates to This Policy',
+        'updates-to-policy-desc': 'We may update this Cookie Policy from time to time. Any changes will be posted on this page with an updated revision date.',
+        'terms-conditions-title': 'Terms & Conditions',
+        'agreement': 'Agreement to Terms',
+        'agreement-desc': 'By accessing and using ClickFormz\'s services, you agree to be bound by these Terms and Conditions. If you disagree with any part of these terms, you may not access our services.',
+        'services': 'Services',
+        'services-desc': 'ClickFormz provides web development, e-commerce solutions, AI chatbot development, and related services. We reserve the right to modify, suspend, or discontinue any aspect of our services at any time.',
+        'intellectual-property': 'Intellectual Property',
+        'ip-desc': 'All content, features, and functionality of our services are owned by ClickFormz and are protected by international copyright, trademark, and other intellectual property laws.',
+        'user-obligations': 'User Obligations',
+        'user-obligations-desc': 'When using our services, you agree to:',
+        'obligation-1': 'Provide accurate and complete information',
+        'obligation-2': 'Maintain the security of your account',
+        'obligation-3': 'Not use our services for any illegal purposes',
+        'obligation-4': 'Not interfere with the proper functioning of our services',
+        'payment-terms': 'Payment Terms',
+        'payment-desc': 'Payment terms and conditions for our services include:',
+        'payment-1': 'All prices are in USD unless otherwise specified',
+        'payment-2': 'Payment is due according to the agreed schedule',
+        'payment-3': 'We reserve the right to suspend services for non-payment',
+        'payment-4': 'Refunds are subject to our refund policy',
+        'limitation-liability': 'Limitation of Liability',
+        'liability-desc': 'ClickFormz shall not be liable for any indirect, incidental, special, consequential, or punitive damages resulting from your use or inability to use our services.',
+        'termination': 'Termination',
+        'termination-desc': 'We may terminate or suspend your access to our services immediately, without prior notice, for any breach of these Terms and Conditions.',
+        'changes': 'Changes to Terms',
+        'changes-desc': 'We reserve the right to modify these terms at any time. We will notify users of any material changes by posting the new Terms and Conditions on this page.'
+    },
+    ar: {
+        'home': 'الرئيسية',
+        'services': 'الخدمات',
+        'about': 'من نحن',
+        'contact': 'اتصل بنا',
+        'hero-title': 'نصنع الحلول الرقمية',
+        'hero-subtitle': 'تطبيقات الويب، المواقع الإلكترونية، التجارة الإلكترونية، روبوتات الذكاء الاصطناعي',
+        'get-started': 'ابدأ الآن',
+        'services-title': 'خدماتنا',
+        'web-dev-title': 'تطوير المواقع',
+        'web-dev-desc': 'مواقع وتطبيقات ويب مخصصة مبنية بأحدث التقنيات وأفضل الممارسات.',
+        'ecommerce-title': 'التجارة الإلكترونية',
+        'ecommerce-desc': 'متاجر إلكترونية قوية مع أنظمة دفع آمنة وإدارة المخزون.',
+        'ai-title': 'روبوتات المحادثة',
+        'ai-desc': 'روبوتات محادثة ذكية وميزات مدعومة بالذكاء الاصطناعي لتحسين تجربة المستخدم.',
+        'web-apps-title': 'تطبيقات الويب',
+        'web-apps-desc': 'تطبيقات ويب مخصصة مبنية بأحدث الأطر والتقنيات.',
+        'about-title': 'من نحن',
+        'about-subtitle': 'شريكك الرقمي',
+        'about-desc': 'نحن فريق من المطورين والمصممين المتحمسين المكرسين لخلق تجارب رقمية استثنائية. مع سنوات من الخبرة في تطوير الويب والتجارة الإلكترونية وحلول الذكاء الاصطناعي، نساعد الشركات على تحويل وجودها الرقمي.',
+        'support': 'دعم',
+        'dedication': 'التزام',
+        'potential': 'إمكانيات',
+        'years-exp': 'سنوات الخبرة',
+        'projects': 'مشروع مكتمل',
+        'clients': 'عميل سعيد',
+        'responsive-design': 'تصميم متجاوب',
+        'seo-optimization': 'تحسين محركات البحث',
+        'performance': 'تحسين الأداء',
+        'payment-gateways': 'بوابات الدفع',
+        'inventory': 'إدارة المخزون',
+        'analytics': 'التحليلات والتقارير',
+        'custom-ai': 'حلول الذكاء الاصطناعي المخصصة',
+        'chatbot': 'تكامل روبوت المحادثة',
+        'automation': 'أتمتة العمليات',
+        'custom-apps': 'تطبيقات مخصصة',
+        'api-integration': 'تكامل واجهة برمجة التطبيقات',
+        'cloud-solutions': 'حلول سحابية',
+        'contact-title': 'اتصل بنا',
+        'firstname': 'الاسم الأول',
+        'lastname': 'الاسم الأخير',
+        'email': 'البريد الإلكتروني',
+        'phone': 'رقم الهاتف',
+        'service': 'ما هي الخدمة التي تهتم بها؟',
+        'budget': 'الميزانية (دولار أمريكي)',
+        'project-details': 'باختصار، ما هو هذا المشروع؟',
+        'website': 'هل لديك موقع ويب حالي؟ إذا كان الأمر كذلك، يرجى تقديم الرابط:',
+        'deadline': 'متى تحتاج إلى إكمال المشروع؟',
+        'hosting': 'هل تحتاج إلى استضافة وبريد إلكتروني؟',
+        'notes': 'ملاحظات إضافية',
+        'send': 'إرسال',
+        'select-service': 'اختر خدمة',
+        'web-applications': 'تطبيقات الويب',
+        'websites': 'المواقع الإلكترونية',
+        'ai-chatbots': 'تطوير روبوتات المحادثة',
+        'e-commerce': 'منصة التجارة الإلكترونية',
+        'yes': 'نعم',
+        'no': 'لا',
+        'firstname-placeholder': 'الاسم الأول',
+        'lastname-placeholder': 'الاسم الأخير',
+        'email-placeholder': 'البريد الإلكتروني',
+        'phone-placeholder': 'رقم الهاتف',
+        'budget-placeholder': 'أدخل ميزانيتك',
+        'project-details-placeholder': 'صف مشروعك',
+        'website-placeholder': 'https://موقعك.com',
+        'deadline-placeholder': 'أدخل الجدول الزمني',
+        'notes-placeholder': 'أي معلومات إضافية',
+        'select2-placeholder': 'اختر خدمة',
+        'quick-links': 'روابط سريعة',
+        'our-services': 'خدماتنا',
+        'contact-us': 'اتصل بنا',
+        'privacy-policy': 'سياسة الخصوصية',
+        'terms-conditions': 'الشروط والأحكام',
+        'cookie-policy': 'سياسة ملفات تعريف الارتباط',
+        'remote-business': 'خدمة عالمية',
+        'all-rights-reserved': 'جميع الحقوق محفوظة.',
+        'footer-cta-text': 'ارتقِ بأعمالك إلى المستوى التالي مع حلولنا الرقمية المتخصصة. ابدأ رحلتك اليوم!',
+        'search-placeholder': 'بحث...',
+        'search-categories': 'التصنيفات',
+        'recent-searches': 'عمليات البحث الأخيرة',
+        'submit-search': 'إرسال البحث',
+        'close-search': 'إغلاق البحث',
+        'cookie-description': 'نحن نستخدم ملفات تعريف الارتباط لتحسين تجربة التصفح وتقديم محتوى مخصص وتحليل حركة المرور لدينا. بالنقر على "قبول الكل"، فإنك توافق على استخدامنا لملفات تعريف الارتباط.',
+        'necessary-cookies': 'ملفات تعريف الارتباط الضرورية',
+        'necessary-cookies-desc': 'مطلوبة لكي يعمل الموقع بشكل صحيح. لا يمكن تعطيلها.',
+        'accept': 'قبول',
+        'reject': 'رفض',
+        'footer-description': 'نصنع تجارب رقمية استثنائية باستخدام أحدث التقنيات وحلول مبتكرة.',
+        'cookie-policy-title': 'سياسة ملفات تعريف الارتباط',
+        'last-updated': 'آخر تحديث: يونيو 2025',
+        'what-are-cookies': 'ما هي ملفات تعريف الارتباط',
+        'cookies-definition': 'ملفات تعريف الارتباط هي ملفات نصية صغيرة يتم وضعها على جهاز الكمبيوتر أو الجهاز المحمول الخاص بك عند زيارة موقعنا. يتم استخدامها على نطاق واسع لجعل المواقع تعمل بكفاءة أكبر وتقديم تجربة مستخدم أفضل.',
+        'how-we-use-cookies': 'كيف نستخدم ملفات تعريف الارتباط',
+        'cookies-usage': 'نستخدم ملفات تعريف الارتباط للأغراض التالية:',
+        'cookies-essential': 'ملفات تعريف الارتباط الأساسية: مطلوبة لكي يعمل الموقع بشكل صحيح',
+        'cookies-preferences': 'ملفات تعريف الارتباط التفضيلية: تذكر إعداداتك وتفضيلاتك',
+        'cookies-analytics': 'ملفات تعريف الارتباط التحليلية: تساعدنا في فهم كيفية تفاعل الزوار مع موقعنا',
+        'cookies-marketing': 'ملفات تعريف الارتباط التسويقية: تستخدم لتقديم إعلانات ذات صلة',
+        'types-of-cookies': 'أنواع ملفات تعريف الارتباط التي نستخدمها',
+        'session-cookies': 'ملفات تعريف الارتباط المؤقتة',
+        'session-cookies-desc': 'ملفات تعريف ارتباط مؤقتة تنتهي عند إغلاق المتصفح. تساعد في الحفاظ على جلستك أثناء استخدام موقعنا.',
+        'persistent-cookies': 'ملفات تعريف الارتباط الدائمة',
+        'persistent-cookies-desc': 'تبقى على جهازك لفترة محددة أو حتى تقوم بحذفها. تساعد في تذكر تفضيلاتك وإعداداتك.',
+        'managing-cookies': 'إدارة ملفات تعريف الارتباط',
+        'managing-cookies-desc': 'يمكنك التحكم في ملفات تعريف الارتباط وإدارتها في إعدادات المتصفح. ومع ذلك، يرجى ملاحظة أن تعطيل بعض ملفات تعريف الارتباط قد يؤثر على وظائف موقعنا.',
+        'browser-settings': 'إعدادات المتصفح',
+        'chrome-settings': 'جوجل كروم',
+        'firefox-settings': 'موزيلا فايرفوكس',
+        'edge-settings': 'مايكروسوفت إيدج',
+        'safari-settings': 'سفاري',
+        'third-party-cookies': 'ملفات تعريف الارتباط من جهات خارجية',
+        'third-party-cookies-desc': 'قد نستخدم خدمات من جهات خارجية تضع ملفات تعريف الارتباط على جهازك. تساعدنا هذه الخدمات في تحليل استخدام الموقع وتقديم ميزات وسائل التواصل الاجتماعي وتقديم إعلانات ذات صلة.',
+        'updates-to-policy': 'تحديثات هذه السياسة',
+        'updates-to-policy-desc': 'قد نقوم بتحديث سياسة ملفات تعريف الارتباط هذه من وقت لآخر. سيتم نشر أي تغييرات على هذه الصفحة مع تاريخ مراجعة محدث.',
+        'terms-conditions-title': 'الشروط والأحكام',
+        'agreement': 'الموافقة على الشروط',
+        'agreement-desc': 'باستخدام خدمات ClickFormz، فإنك توافق على الالتزام بهذه الشروط والأحكام. إذا كنت لا توافق على أي جزء من هذه الشروط، فلا يجوز لك استخدام خدماتنا.',
+        'services': 'الخدمات',
+        'services-desc': 'تقدم ClickFormz خدمات تطوير الويب، وحلول التجارة الإلكترونية، وتطوير روبوتات المحادثة الذكية، والخدمات ذات الصلة. نحتفظ بالحق في تعديل أو تعليق أو إنهاء أي جانب من جوانب خدماتنا في أي وقت.',
+        'intellectual-property': 'الملكية الفكرية',
+        'ip-desc': 'جميع المحتويات والميزات والوظائف في خدماتنا مملوكة لـ ClickFormz ومحمية بموجب قوانين حقوق النشر والعلامات التجارية والملكية الفكرية الدولية.',
+        'user-obligations': 'التزامات المستخدم',
+        'user-obligations-desc': 'عند استخدام خدماتنا، فإنك توافق على:',
+        'obligation-1': 'تقديم معلومات دقيقة وكاملة',
+        'obligation-2': 'الحفاظ على أمان حسابك',
+        'obligation-3': 'عدم استخدام خدماتنا لأي أغراض غير قانونية',
+        'obligation-4': 'عدم التدخل في الأداء السليم لخدماتنا',
+        'payment-terms': 'شروط الدفع',
+        'payment-desc': 'تشمل شروط وأحكام الدفع لخدماتنا:',
+        'payment-1': 'جميع الأسعار بالدولار الأمريكي ما لم يذكر خلاف ذلك',
+        'payment-2': 'يستحق الدفع وفقًا للجدول المتفق عليه',
+        'payment-3': 'نحتفظ بالحق في تعليق الخدمات لعدم الدفع',
+        'payment-4': 'تخضع المبالغ المستردة لسياسة الاسترداد الخاصة بنا',
+        'limitation-liability': 'تحديد المسؤولية',
+        'liability-desc': 'لن تكون ClickFormz مسؤولة عن أي أضرار غير مباشرة أو عرضية أو خاصة أو تبعية أو عقابية ناتجة عن استخدامك أو عدم قدرتك على استخدام خدماتنا.',
+        'termination': 'إنهاء الخدمة',
+        'termination-desc': 'يجوز لنا إنهاء أو تعليق وصولك إلى خدماتنا فورًا، دون إشعار مسبق، لأي مخالفة لهذه الشروط والأحكام.',
+        'changes': 'التغييرات في الشروط',
+        'changes-desc': 'نحتفظ بالحق في تعديل هذه الشروط في أي وقت. سنقوم بإخطار المستخدمين بأي تغييرات جوهرية عن طريق نشر الشروط والأحكام الجديدة على هذه الصفحة.',
+        'information-collection': 'المعلومات التي نجمعها',
+        'collection-desc': 'نقوم بجمع المعلومات التي تقدمها لنا مباشرة، بما في ذلك:',
+        'collection-1': 'المعلومات الشخصية (الاسم، البريد الإلكتروني، رقم الهاتف)',
+        'collection-2': 'معلومات العمل (اسم الشركة، الصناعة)',
+        'collection-3': 'متطلبات ومواصفات المشروع',
+        'collection-4': 'تفضيلات الاتصال',
+        'information-use': 'كيفية استخدام معلوماتك',
+        'use-desc': 'نستخدم المعلومات المجمعة من أجل:',
+        'use-1': 'تقديم وتحسين خدماتنا',
+        'use-2': 'التواصل معك بشأن مشاريعك',
+        'use-3': 'إرسال التحديثات والإشعارات المهمة',
+        'use-4': 'تحليل وتعزيز تجربة المستخدم',
+        'information-sharing': 'مشاركة المعلومات',
+        'sharing-desc': 'قد نشارك معلوماتك مع:',
+        'sharing-1': 'مقدمي الخدمات الذين يساعدون في عملياتنا',
+        'sharing-2': 'المستشارين والمستشارين المهنيين',
+        'sharing-3': 'جهات إنفاذ القانون عندما يقتضي القانون ذلك',
+        'data-security': 'أمن البيانات',
+        'security-desc': 'نقوم بتنفيذ إجراءات أمنية مناسبة لحماية معلوماتك، بما في ذلك:',
+        'security-1': 'تشفير البيانات الحساسة',
+        'security-2': 'التقييمات الأمنية المنتظمة',
+        'security-3': 'ضوابط الوصول والمصادقة',
+        'security-4': 'تخزين ونقل البيانات الآمن',
+        'user-rights': 'حقوقك',
+        'rights-desc': 'لديك الحق في:',
+        'rights-1': 'الوصول إلى معلوماتك الشخصية',
+        'rights-2': 'تصحيح البيانات غير الدقيقة',
+        'rights-3': 'طلب حذف بياناتك',
+        'rights-4': 'الانسحاب من الرسائل التسويقية',
+        'cookies-tracking': 'ملفات تعريف الارتباط والتتبع',
+        'cookies-desc': 'نستخدم ملفات تعريف الارتباط وتقنيات التتبع المماثلة من أجل:',
+        'cookies-1': 'تذكر تفضيلاتك',
+        'cookies-2': 'تحليل استخدام الموقع',
+        'cookies-3': 'تحسين خدماتنا',
+        'cookies-4': 'تقديم محتوى مخصص',
+        'policy-updates': 'تحديثات هذه السياسة',
+        'updates-desc': 'قد نقوم بتحديث سياسة الخصوصية هذه من وقت لآخر. سنقوم بإخطارك بأي تغييرات جوهرية عن طريق نشر سياسة الخصوصية الجديدة على هذه الصفحة.',
+        'contact-info': 'اتصل بنا',
+        'contact-desc': 'إذا كان لديك أي أسئلة حول سياسة الخصوصية هذه، يرجى الاتصال بنا على:',
+        'contact-email': 'البريد الإلكتروني: privacy@clickformz.com',
+        'contact-phone': 'الهاتف: +1 (234) 567-890'
+    }
+};
+
+// Language update function
+function updateLanguage(lang) {
+    // Store language preference
+    localStorage.setItem('preferred_language', lang);
+
+    // Show loader
+    const loader = document.querySelector('.language-loader');
+    if (loader) {
+        loader.classList.add('active');
+    }
+
+    // Update document language
+    document.documentElement.lang = lang;
+    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+
+    // Update all elements with data-lang attribute
+    document.querySelectorAll('[data-lang]').forEach(element => {
+        const key = element.getAttribute('data-lang');
+        if (translations[lang] && translations[lang][key]) {
+            element.textContent = translations[lang][key];
+        }
+    });
+
+    // Update placeholders
+    document.querySelectorAll('[data-lang-placeholder]').forEach(element => {
+        const key = element.getAttribute('data-lang-placeholder');
+        if (translations[lang] && translations[lang][key]) {
+            element.placeholder = translations[lang][key];
+        }
+    });
+
+    // Update aria-labels
+    document.querySelectorAll('[data-lang-aria-label]').forEach(element => {
+        const key = element.getAttribute('data-lang-aria-label');
+        if (translations[lang] && translations[lang][key]) {
+            element.setAttribute('aria-label', translations[lang][key]);
+        }
+    });
+
+    // Handle Select2 if it exists
+    if (serviceSelect && serviceSelect.length) {
+        serviceSelect.select2('destroy');
+        serviceSelect.select2({
+            theme: 'bootstrap-5',
+            width: '100%',
+            placeholder: function () {
+                return $(this).data('placeholder');
+            },
+            allowClear: true,
+            minimumResultsForSearch: Infinity
+        });
+    }
+
+    // Hide loader after a short delay
+    setTimeout(() => {
+        if (loader) {
+            loader.classList.remove('active');
+        }
+    }, 300);
+}
+
+// Check for saved language preference on page load
+document.addEventListener('DOMContentLoaded', () => {
+    const savedLanguage = localStorage.getItem('preferred_language');
+    if (savedLanguage) {
+        updateLanguage(savedLanguage);
+    }
+});
+
+// Language Switcher
+const langButtons = document.querySelectorAll('.lang-btn');
+
+langButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        const lang = button.getAttribute('data-lang');
+        // Remove active class from all buttons
+        langButtons.forEach(btn => btn.classList.remove('active'));
+        // Add active class to clicked button
+        button.classList.add('active');
+        updateLanguage(lang);
+    });
+});
+
+// Set initial active state for language button
+const initialLang = document.documentElement.lang || 'en';
+const activeLangButton = document.querySelector(`.lang-btn[data-lang="${initialLang}"]`);
+if (activeLangButton) {
+    activeLangButton.classList.add('active');
+} 
