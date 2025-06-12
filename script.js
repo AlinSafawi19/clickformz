@@ -1304,7 +1304,11 @@ function validateForm() {
 // Add form submit event listener
 document.getElementById('contact-form').addEventListener('submit', function(e) {
     e.preventDefault();
-    
+
+    // Show the language-loader while sending
+    const loader = document.querySelector('.language-loader');
+    if (loader) loader.classList.add('active');
+
     if (validateForm()) {
         // Get form data
         const formData = {
@@ -1328,6 +1332,8 @@ document.getElementById('contact-form').addEventListener('submit', function(e) {
         // Send email using EmailJS
         emailjs.send("service_4hi3osc", "template_w1q40ia", formData)
             .then(function() {
+                // Hide the loader after sending
+                if (loader) loader.classList.remove('active');
                 // Show success message
                 Swal.fire({
                     icon: 'success',
@@ -1358,6 +1364,8 @@ document.getElementById('contact-form').addEventListener('submit', function(e) {
                 });
             })
             .catch(function(error) {
+                // Hide the loader on error
+                if (loader) loader.classList.remove('active');
                 // Show error message
                 Swal.fire({
                     icon: 'error',
@@ -1376,5 +1384,8 @@ document.getElementById('contact-form').addEventListener('submit', function(e) {
                 });
                 console.error('EmailJS error:', error);
             });
+    } else {
+        // Hide the loader if validation fails
+        if (loader) loader.classList.remove('active');
     }
-}); 
+});
