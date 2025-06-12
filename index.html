@@ -566,14 +566,51 @@
     <script src="script.js"></script>
     <script>
         $(document).ready(function () {
+            // Initialize Select2 for service selection
             $('#service').select2({
                 theme: 'bootstrap-5',
                 width: '100%',
                 placeholder: function () {
-                    return $('[data-lang="select-service"]').text();
+                    return translations[document.documentElement.lang]['select-service'];
                 },
                 allowClear: false,
-                minimumResultsForSearch: Infinity
+                minimumResultsForSearch: Infinity,
+                language: {
+                    noResults: function () {
+                        return translations[document.documentElement.lang]['no-results'];
+                    }
+                },
+                dir: document.documentElement.lang === 'ar' ? 'rtl' : 'ltr'
+            });
+
+            // Update Select2 text when language changes
+            document.addEventListener('languageChanged', function (e) {
+                const lang = e.detail.lang;
+                const $select = $('#service');
+
+                // Update placeholder
+                $select.select2('destroy');
+                $select.select2({
+                    theme: 'bootstrap-5',
+                    width: '100%',
+                    placeholder: translations[lang]['select-service'],
+                    allowClear: false,
+                    minimumResultsForSearch: Infinity,
+                    language: {
+                        noResults: function () {
+                            return translations[lang]['no-results'];
+                        }
+                    },
+                    dir: lang === 'ar' ? 'rtl' : 'ltr'
+                });
+
+                // Update option texts
+                $select.find('option').each(function () {
+                    const value = $(this).val();
+                    if (value && translations[lang][value]) {
+                        $(this).text(translations[lang][value]);
+                    }
+                });
             });
         });
     </script>

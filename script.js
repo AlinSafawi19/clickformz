@@ -1118,6 +1118,9 @@ function updateLanguage(lang) {
 
     // Store the selected language
     localStorage.setItem('selectedLanguage', lang);
+
+    // Dispatch custom event for language change
+    document.dispatchEvent(new CustomEvent('languageChanged', { detail: { lang } }));
 }
 
 // Initialize language on page load
