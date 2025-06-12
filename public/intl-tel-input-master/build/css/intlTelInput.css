@@ -119,7 +119,6 @@
   padding: 0;
   margin: 0;
   overflow-y: scroll;
-  -webkit-overflow-scrolling: touch;
 }
 .iti--inline-dropdown .iti__country-list {
   max-height: 185px;
