@@ -318,14 +318,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const phoneInputField = document.querySelector("#phone");
     if (phoneInputField && typeof window.intlTelInput === 'function') {
         window.phoneInput = window.intlTelInput(phoneInputField, {
-            utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/js/utils.js",
+            utilsScript: "public/intl-tel-input-master/build/js/utils.js",
             preferredCountries: ["us", "gb", "ca", "ae"],
             separateDialCode: true,
             initialCountry: localStorage.getItem('phone_country') || "auto",
             customContainer: "iti-custom",
             geoIpLookup: function (callback) {
-                fetch("https://ipapi.co/json")
-                    .then(res => res.json())
+                fetch("public/json/json.json")
+                .then(res => res.json())
                     .then(data => {
                         // Only use geoIP if no country is stored
                         if (!localStorage.getItem('phone_country')) {
