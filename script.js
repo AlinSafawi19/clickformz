@@ -327,7 +327,7 @@ document.addEventListener('DOMContentLoaded', () => {
             customContainer: "iti-custom",
             geoIpLookup: function (callback) {
                 fetch("/public/json/json.json")
-                .then(res => res.json())
+                    .then(res => res.json())
                     .then(data => {
                         // Only use geoIP if no country is stored
                         if (!localStorage.getItem('phone_country')) {
@@ -1077,7 +1077,7 @@ const translations = {
 function updateLanguage(lang) {
     // Update HTML lang attribute
     document.documentElement.lang = lang;
-    
+
     // Update active state of language buttons
     document.querySelectorAll('.lang-btn').forEach(btn => {
         if (btn.getAttribute('data-lang') === lang) {
@@ -1121,18 +1121,24 @@ function updateLanguage(lang) {
 }
 
 // Initialize language on page load
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Get stored language or default to 'en'
     const storedLang = localStorage.getItem('selectedLanguage') || 'en';
-    
+
     // Update language immediately
     updateLanguage(storedLang);
 
     // Add click event listeners to language buttons
     document.querySelectorAll('.lang-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
+        btn.addEventListener('click', function () {
             const lang = this.getAttribute('data-lang');
+            const loader = document.querySelector('.language-loader');
+            if (loader) loader.classList.add('active'); // Show loader
+
             updateLanguage(lang);
+            setTimeout(() => {
+                if (loader) loader.classList.remove('active');
+            }, 400);
         });
     });
 });
@@ -1140,17 +1146,17 @@ document.addEventListener('DOMContentLoaded', function() {
 // FAQ Section
 function initializeFAQ() {
     const faqQuestions = document.querySelectorAll('.faq-question');
-    
+
     faqQuestions.forEach(question => {
         question.addEventListener('click', () => {
             // Toggle aria-expanded attribute
             const isExpanded = question.getAttribute('aria-expanded') === 'true';
             question.setAttribute('aria-expanded', !isExpanded);
-            
+
             // Toggle active class on answer
             const answer = question.nextElementSibling;
             answer.classList.toggle('active');
-            
+
             // Close other answers in the same category
             const category = question.closest('.faq-category');
             const otherQuestions = category.querySelectorAll('.faq-question');
@@ -1188,7 +1194,7 @@ function validateForm() {
             // Special handling for radio buttons
             const radioButtons = document.getElementsByName('hosting');
             const isChecked = Array.from(radioButtons).some(radio => radio.checked);
-            
+
             if (!isChecked) {
                 Swal.fire({
                     icon: 'error',
@@ -1297,12 +1303,12 @@ function validateForm() {
 }
 
 // Initialize EmailJS
-(function() {
+(function () {
     emailjs.init("NxCZGoWrfQBLjkYnf"); // public key
 })();
 
 // Add form submit event listener
-document.getElementById('contact-form').addEventListener('submit', function(e) {
+document.getElementById('contact-form').addEventListener('submit', function (e) {
     e.preventDefault();
 
     // Show the language-loader while sending
@@ -1331,7 +1337,7 @@ document.getElementById('contact-form').addEventListener('submit', function(e) {
 
         // Send email using EmailJS
         emailjs.send("service_4hi3osc", "template_w1q40ia", formData)
-            .then(function() {
+            .then(function () {
                 // Hide the loader after sending
                 if (loader) loader.classList.remove('active');
                 // Show success message
@@ -1363,7 +1369,7 @@ document.getElementById('contact-form').addEventListener('submit', function(e) {
                     }
                 });
             })
-            .catch(function(error) {
+            .catch(function (error) {
                 // Hide the loader on error
                 if (loader) loader.classList.remove('active');
                 // Show error message
