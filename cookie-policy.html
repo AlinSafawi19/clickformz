@@ -110,14 +110,26 @@
             <h1 data-lang="cookie-policy-title">Cookie Policy</h1>
             <p class="last-updated" data-lang="last-updated">Last Updated: June 2025</p>
 
-            <div class="policy-section">
+            <!-- Table of Contents -->
+            <div class="table-of-contents">
+                <h2 data-lang="table-of-contents">Table of Contents</h2>
+                <ul>
+                    <li><a href="#what-are-cookies" data-lang="what-are-cookies">1. What Are Cookies</a></li>
+                    <li><a href="#how-we-use-cookies" data-lang="how-we-use-cookies">2. How We Use Cookies</a></li>
+                    <li><a href="#types-of-cookies" data-lang="types-of-cookies">3. Types of Cookies We Use</a></li>
+                    <li><a href="#managing-cookies" data-lang="managing-cookies">4. Managing Cookies</a></li>
+                    <li><a href="#third-party-cookies" data-lang="third-party-cookies">5. Third-Party Cookies</a></li>
+                </ul>
+            </div>
+
+            <div class="policy-section" id="what-are-cookies">
                 <h2 data-lang="what-are-cookies">What Are Cookies</h2>
                 <p data-lang="cookies-definition">Cookies are small text files that are placed on your computer or
                     mobile device when you visit our website. They are widely used to make websites work more
                     efficiently and provide a better user experience.</p>
             </div>
 
-            <div class="policy-section">
+            <div class="policy-section" id="how-we-use-cookies">
                 <h2 data-lang="how-we-use-cookies">How We Use Cookies</h2>
                 <p data-lang="cookies-usage">We use cookies for the following purposes:</p>
                 <ul>
@@ -130,7 +142,7 @@
                 </ul>
             </div>
 
-            <div class="policy-section">
+            <div class="policy-section" id="types-of-cookies">
                 <h2 data-lang="types-of-cookies">Types of Cookies We Use</h2>
                 <div class="cookie-types">
                     <div class="cookie-type">
@@ -146,7 +158,7 @@
                 </div>
             </div>
 
-            <div class="policy-section">
+            <div class="policy-section" id="managing-cookies">
                 <h2 data-lang="managing-cookies">Managing Cookies</h2>
                 <p data-lang="managing-cookies-desc">You can control and manage cookies in your browser settings.
                     However, please note that disabling certain cookies may affect the functionality of our website.</p>
@@ -165,7 +177,7 @@
                 </div>
             </div>
 
-            <div class="policy-section">
+            <div class="policy-section" id="third-party-cookies">
                 <h2 data-lang="third-party-cookies">Third-Party Cookies</h2>
                 <p data-lang="third-party-cookies-desc">We may use third-party services that place cookies on your
                     device. These services help us analyze website usage, provide social media features, and deliver
@@ -245,6 +257,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const header = document.querySelector('.transparent-header');
+            const cookieConsentBanner = document.getElementById('cookieConsentBanner');
 
             // Function to update header state
             const updateHeaderState = () => {
@@ -271,6 +284,23 @@
 
             // Set initial state
             updateHeaderState();
+
+            // Cookie Consent Banner Logic
+            const hasConsented = localStorage.getItem('cookieConsent');
+            if (!hasConsented) {
+                cookieConsentBanner.style.display = 'block';
+            }
+
+            document.querySelector('.cookie-consent-accept').addEventListener('click', () => {
+                localStorage.setItem('cookieConsent', 'true');
+                cookieConsentBanner.style.display = 'none';
+            });
+
+            document.querySelector('.cookie-consent-settings').addEventListener('click', () => {
+                // Scroll to cookie settings section
+                document.querySelector('#managing-cookies').scrollIntoView({ behavior: 'smooth' });
+                cookieConsentBanner.style.display = 'none';
+            });
         });
     </script>
 </body>
