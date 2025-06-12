@@ -447,31 +447,26 @@ document.addEventListener('DOMContentLoaded', () => {
         const categoryTags = document.querySelectorAll('.category-tag');
         for (const tag of categoryTags) {
             if (tag.textContent.toLowerCase().trim() === term.toLowerCase()) {
-                const servicesSection = document.querySelector('#services');
-                if (servicesSection) {
-                    servicesSection.scrollIntoView({ behavior: 'smooth' });
-                    searchOverlay.classList.remove('active');
-                    return;
-                }
+                // Navigate to the services section on the main page
+                window.location.href = 'index.html#services';
+                searchOverlay.classList.remove('active');
+                return;
             }
         }
 
         // Then check for section matches
         const sections = {
-            'home': '#home',
-            'services': '#services',
-            'about': '#about',
-            'contact': '#contact'
+            'home': 'index.html#home',
+            'services': 'index.html#services',
+            'about': 'index.html#about',
+            'contact': 'index.html#contact'
         };
 
         // Direct section match
         if (sections[term.toLowerCase()]) {
-            const targetSection = document.querySelector(sections[term.toLowerCase()]);
-            if (targetSection) {
-                targetSection.scrollIntoView({ behavior: 'smooth' });
-                searchOverlay.classList.remove('active');
-                return;
-            }
+            window.location.href = sections[term.toLowerCase()];
+            searchOverlay.classList.remove('active');
+            return;
         }
 
         // Search through section content
@@ -497,14 +492,11 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Scroll to the best match or services as fallback
+        // Navigate to the best match or services as fallback
         if (bestMatch && bestMatchScore > 0) {
-            bestMatch.scrollIntoView({ behavior: 'smooth' });
+            window.location.href = `index.html#${bestMatch.id}`;
         } else {
-            const servicesSection = document.querySelector('#services');
-            if (servicesSection) {
-                servicesSection.scrollIntoView({ behavior: 'smooth' });
-            }
+            window.location.href = 'index.html#services';
         }
 
         searchOverlay.classList.remove('active');
