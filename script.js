@@ -28,8 +28,11 @@ function rejectCookies() {
 
 // Initialize cookie consent
 document.addEventListener('DOMContentLoaded', () => {
-    // Clear any existing stored data
-    clearStoredData();
+    // Check if user has already made a choice
+    const hasConsent = localStorage.getItem(COOKIE_CONSENT);
+    if (hasConsent) {
+        cookieBanner.style.display = 'none';
+    }
 
     // Event listeners for cookie buttons
     if (acceptBtn) acceptBtn.addEventListener('click', acceptCookies);
