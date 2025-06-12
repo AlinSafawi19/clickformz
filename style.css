@@ -1331,16 +1331,35 @@ textarea.input::placeholder {
     border-right: none !important;
     border-left: 1px solid rgba(255, 255, 255, 0.1) !important;
     border-radius: 0 8px 8px 0 !important;
+    order: 2;
 }
 
 [lang="ar"] .iti__flag-container {
     margin-right: 0;
     margin-left: 6px;
+    order: 2;
 }
 
 [lang="ar"] .iti__dial-code {
     margin-right: 6px;
     margin-left: 0;
+}
+
+[lang="ar"] .iti {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+[lang="ar"] .iti input[type="tel"] {
+    order: 1;
+    text-align: right;
+    padding-right: 10px !important;
+    padding-left: 70px !important;
+}
+
+[lang="ar"] .iti__dropdown-content {
+    right: 0;
+    left: auto;
 }
 
 /* Footer Styles */
