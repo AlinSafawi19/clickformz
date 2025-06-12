@@ -2588,7 +2588,8 @@ textarea.input::placeholder {
 
 /* RTL Support for Cookie Policy */
 [lang="ar"] .breadcrumb-container {
-    flex-direction: row-reverse;
+    flex-direction: row;
+    justify-content: flex-start;
 }
 
 [lang="ar"] .table-of-contents a:hover {
