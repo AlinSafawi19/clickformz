@@ -2982,3 +2982,53 @@ textarea.input::placeholder {
         padding: 12px 15px;
     }
 }
+
+/* SweetAlert2 Toast Customization */
+.colored-toast {
+    margin-top: 5rem !important;
+    background: #1a1a1a !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+    border: 1px solid #333 !important;
+}
+
+.colored-toast .swal2-title {
+    font-size: 1rem;
+    margin: 0;
+    color: #fff !important;
+}
+
+.colored-toast .swal2-html-container {
+    font-size: 0.875rem;
+    margin: 0.5rem 0 0 0;
+    color: #ccc !important;
+}
+
+.colored-toast .swal2-timer-progress-bar {
+    background: rgba(229, 96, 56, 0.637) !important;
+}
+
+.colored-toast .swal2-icon {
+    border-color: #333 !important;
+}
+
+.colored-toast .swal2-icon.swal2-error {
+    border-color: #e56038 !important;
+    color: #e56038 !important;
+}
+
+.colored-toast .swal2-icon.swal2-error [class^='swal2-x-mark-line'] {
+    background-color: #e56038 !important;
+}
+
+.colored-toast .swal2-icon.swal2-success {
+    border-color: #4CAF50 !important;
+    color: #4CAF50 !important;
+}
+
+.colored-toast .swal2-icon.swal2-success [class^='swal2-success-line'] {
+    background-color: #4CAF50 !important;
+}
+
+.colored-toast .swal2-icon.swal2-success .swal2-success-ring {
+    border-color: #4CAF50 !important;
+}

@@ -540,7 +540,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 const translations = {
-    en: {
+    'en': {
         'home': 'Home',
         'services': 'Services',
         'about': 'About',
@@ -761,8 +761,17 @@ const translations = {
         'general-a1': 'Our pricing is project-based and depends on your specific requirements. We provide detailed quotes after understanding your needs. We also offer maintenance and support packages for ongoing services.',
         'general-q2': 'Do you provide post-launch support?',
         'general-a2': 'Yes, we offer comprehensive post-launch support including maintenance, updates, and technical assistance. We provide different support packages to match your needs and ensure your digital solution remains optimal.',
+        'required-field': 'Required Field',
+        'please-select': 'Please select',
+        'please-enter': 'Please enter',
+        'invalid-email': 'Invalid Email',
+        'please-enter-valid-email': 'Please enter a valid email address',
+        'invalid-budget': 'Invalid Budget',
+        'please-enter-valid-budget': 'Please enter a valid budget amount (numbers and commas only)',
+        'form-submitted': 'Form Submitted!',
+        'thank-you-message': 'Thank you for contacting us. We will get back to you soon.'
     },
-    ar: {
+    'ar': {
         'home': 'الرئيسية',
         'services': 'الخدمات',
         'about': 'من نحن',
@@ -1052,6 +1061,15 @@ const translations = {
         'general-a1': 'تستند أسعارنا إلى المشروع وتعتمد على متطلباتك المحددة. نقدم عروض أسعار مفصلة بعد فهم احتياجاتك. كما نقدم حزم الصيانة والدعم للخدمات المستمرة.',
         'general-q2': 'هل تقدمون دعم ما بعد الإطلاق؟',
         'general-a2': 'نعم، نقدم دعمًا شاملاً لما بعد الإطلاق يشمل الصيانة والتحديثات والمساعدة التقنية. نقدم حزم دعم مختلفة لتتناسب مع احتياجاتك وضمان بقاء حلولك الرقمية في حالة مثالية.',
+        'required-field': 'حقل مطلوب',
+        'please-select': 'الرجاء اختيار',
+        'please-enter': 'الرجاء إدخال',
+        'invalid-email': 'بريد إلكتروني غير صالح',
+        'please-enter-valid-email': 'الرجاء إدخال عنوان بريد إلكتروني صالح',
+        'invalid-budget': 'ميزانية غير صالحة',
+        'please-enter-valid-budget': 'الرجاء إدخال مبلغ ميزانية صالح (أرقام وفواصل فقط)',
+        'form-submitted': 'تم إرسال النموذج!',
+        'thank-you-message': 'شكراً لتواصلكم معنا. سنتواصل معكم قريباً.'
     }
 };
 
@@ -1149,4 +1167,167 @@ function initializeFAQ() {
 // Initialize FAQ when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     initializeFAQ();
+});
+
+// Form validation function
+function validateForm() {
+    const requiredFields = {
+        'firstname': translations[document.documentElement.lang]['firstname'],
+        'lastname': translations[document.documentElement.lang]['lastname'],
+        'email': translations[document.documentElement.lang]['email'],
+        'service': translations[document.documentElement.lang]['service'],
+        'budget': translations[document.documentElement.lang]['budget'],
+        'project-details': translations[document.documentElement.lang]['project-details'],
+        'deadline': translations[document.documentElement.lang]['deadline'],
+        'hosting': translations[document.documentElement.lang]['hosting']
+    };
+
+    // Check each required field
+    for (const [fieldId, fieldName] of Object.entries(requiredFields)) {
+        const field = document.getElementById(fieldId);
+        
+        if (field.type === 'radio') {
+            const radioButtons = document.getElementsByName(fieldId);
+            const isChecked = Array.from(radioButtons).some(radio => radio.checked);
+            
+            if (!isChecked) {
+                Swal.fire({
+                    icon: 'error',
+                    title: translations[document.documentElement.lang]['required-field'],
+                    text: `${translations[document.documentElement.lang]['please-select']} ${fieldName}`,
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    position: 'top-end',
+                    toast: true,
+                    width: 'auto',
+                    padding: '0.5rem',
+                    customClass: {
+                        popup: 'colored-toast'
+                    },
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                });
+                return false;
+            }
+        } else {
+            if (!field.value.trim()) {
+                Swal.fire({
+                    icon: 'error',
+                    title: translations[document.documentElement.lang]['required-field'],
+                    text: `${translations[document.documentElement.lang]['please-enter']} ${fieldName}`,
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    position: 'top-end',
+                    toast: true,
+                    width: 'auto',
+                    padding: '0.5rem',
+                    customClass: {
+                        popup: 'colored-toast'
+                    },
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                });
+                field.focus();
+                return false;
+            }
+        }
+    }
+
+    // Validate email format
+    const emailField = document.getElementById('email');
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(emailField.value.trim())) {
+        Swal.fire({
+            icon: 'error',
+            title: translations[document.documentElement.lang]['invalid-email'],
+            text: translations[document.documentElement.lang]['please-enter-valid-email'],
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            position: 'top-end',
+            toast: true,
+            width: 'auto',
+            padding: '0.5rem',
+            customClass: {
+                popup: 'colored-toast'
+            },
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        });
+        emailField.focus();
+        return false;
+    }
+
+    // Validate budget format (numbers and commas only)
+    const budgetField = document.getElementById('budget');
+    const budgetRegex = /^[0-9,]+$/;
+    if (!budgetRegex.test(budgetField.value.trim())) {
+        Swal.fire({
+            icon: 'error',
+            title: translations[document.documentElement.lang]['invalid-budget'],
+            text: translations[document.documentElement.lang]['please-enter-valid-budget'],
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            position: 'top-end',
+            toast: true,
+            width: 'auto',
+            padding: '0.5rem',
+            customClass: {
+                popup: 'colored-toast'
+            },
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        });
+        budgetField.focus();
+        return false;
+    }
+
+    return true;
+}
+
+// Add form submit event listener
+document.getElementById('contact-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    if (validateForm()) {
+        // Show success message
+        Swal.fire({
+            icon: 'success',
+            title: translations[document.documentElement.lang]['form-submitted'],
+            text: translations[document.documentElement.lang]['thank-you-message'],
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            position: 'top-end',
+            toast: true,
+            width: 'auto',
+            padding: '0.5rem',
+            customClass: {
+                popup: 'colored-toast'
+            },
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            },
+            willClose: () => {
+                // Reset form
+                this.reset();
+                // Reset Select2 if it exists
+                if ($('#service').data('select2')) {
+                    $('#service').val('').trigger('change');
+                }
+            }
+        });
+    }
 }); 
