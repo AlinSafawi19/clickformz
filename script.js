@@ -543,20 +543,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
-
-    // Initialize Select2
-    serviceSelect = $('#service');
-    if (serviceSelect.length) {
-        serviceSelect.select2({
-            theme: 'bootstrap-5',
-            width: '100%',
-            placeholder: function () {
-                return $(this).data('placeholder');
-            },
-            allowClear: true,
-            minimumResultsForSearch: Infinity
-        });
-    }
 });
 
 const translations = {
