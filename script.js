@@ -623,7 +623,7 @@ const translations = {
         'recent-searches': 'Recent Searches',
         'submit-search': 'Submit search',
         'close-search': 'Close search',
-        'cookie-description': 'We use cookies to enhance your browsing experience. By clicking "Accept", you consent to our use of necessary cookies.',
+        'cookie-description': 'We use cookies to enhance your browsing experience. By clicking "Accept", you consent to our use of necessary cookies. For more information, please read our <a href="privacy-policy.html">Privacy Policy</a>, <a href="terms-conditions.html">Terms & Conditions</a>, and <a href="cookie-policy.html">Cookie Policy</a>.',
         'necessary-cookies': 'Necessary Cookies',
         'necessary-cookies-desc': 'Required for the website to function properly. Cannot be disabled.',
         'accept': 'Accept',
@@ -845,7 +845,7 @@ const translations = {
         'recent-searches': 'عمليات البحث الأخيرة',
         'submit-search': 'إرسال البحث',
         'close-search': 'إغلاق البحث',
-        'cookie-description': 'نحن نستخدم ملفات تعريف الارتباط لتحسين تجربة التصفح وتقديم محتوى مخصص وتحليل حركة المرور لدينا. بالنقر على "قبول الكل"، فإنك توافق على استخدامنا لملفات تعريف الارتباط.',
+        'cookie-description': 'نحن نستخدم ملفات تعريف الارتباط لتحسين تجربة التصفح الخاصة بك. بالنقر على "قبول"، فإنك توافق على استخدامنا لملفات تعريف الارتباط الضرورية. لمزيد من المعلومات، يرجى قراءة <a href="privacy-policy.html">سياسة الخصوصية</a>، <a href="terms-conditions.html">الشروط والأحكام</a>، و<a href="cookie-policy.html">سياسة ملفات تعريف الارتباط</a>.',
         'necessary-cookies': 'ملفات تعريف الارتباط الضرورية',
         'necessary-cookies-desc': 'مطلوبة لكي يعمل الموقع بشكل صحيح. لا يمكن تعطيلها.',
         'accept': 'قبول',
@@ -1073,7 +1073,12 @@ function updateLanguage(lang) {
     document.querySelectorAll('[data-lang]').forEach(element => {
         const key = element.getAttribute('data-lang');
         if (translations[lang] && translations[lang][key]) {
-            element.textContent = translations[lang][key];
+            // Use innerHTML for elements that might contain HTML
+            if (key === 'cookie-description') {
+                element.innerHTML = translations[lang][key];
+            } else {
+                element.textContent = translations[lang][key];
+            }
         }
     });
 
