@@ -498,48 +498,40 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Search function
     function performSearch(term) {
-        // First check if it's a category tag
-        const categoryTags = document.querySelectorAll('.category-tag');
-        for (const tag of categoryTags) {
-            if (tag.textContent.toLowerCase().trim() === term.toLowerCase()) {
-                // Navigate to the services section on the main page
-                window.location.href = 'index.html#services';
-                searchOverlay.classList.remove('active');
-                return;
+        // Convert search term to lowercase for case-insensitive matching
+        const searchTerm = term.toLowerCase();
+
+        // Define searchable sections and their keywords
+        const searchableSections = [
+            {
+                id: 'services',
+                keywords: ['web', 'website', 'application', 'app', 'development', 'service', 'services', 'e-commerce', 'ecommerce', 'chatbot', 'ai', 'artificial intelligence']
+            },
+            {
+                id: 'about',
+                keywords: ['about', 'company', 'team', 'mission', 'vision', 'story', 'who we are']
+            },
+            {
+                id: 'faq',
+                keywords: ['faq', 'question', 'questions', 'help', 'support', 'how to', 'how do', 'what is']
+            },
+            {
+                id: 'contact',
+                keywords: ['contact', 'get in touch', 'reach', 'email', 'phone', 'message', 'form', 'submit']
             }
-        }
+        ];
 
-        // Then check for section matches
-        const sections = {
-            'home': 'index.html#home',
-            'services': 'index.html#services',
-            'about': 'index.html#about',
-            'contact': 'index.html#contact'
-        };
-
-        // Direct section match
-        if (sections[term.toLowerCase()]) {
-            window.location.href = sections[term.toLowerCase()];
-            searchOverlay.classList.remove('active');
-            return;
-        }
-
-        // Search through section content
-        const allSections = document.querySelectorAll('section');
+        // Find the best matching section
         let bestMatch = null;
         let bestMatchScore = 0;
 
-        allSections.forEach(section => {
-            let score = 0;
-            const sectionId = section.id;
-            const sectionTitle = section.querySelector('h1, h2, h3');
-            const sectionContent = section.textContent.toLowerCase();
-            const searchTerm = term.toLowerCase();
-
-            // Score based on different criteria
-            if (sectionId === searchTerm) score += 5;
-            if (sectionTitle && sectionTitle.textContent.toLowerCase().includes(searchTerm)) score += 3;
-            if (sectionContent.includes(searchTerm)) score += 1;
+        searchableSections.forEach(section => {
+            const score = section.keywords.reduce((total, keyword) => {
+                if (searchTerm.includes(keyword)) {
+                    return total + 1;
+                }
+                return total;
+            }, 0);
 
             if (score > bestMatchScore) {
                 bestMatchScore = score;
@@ -1128,52 +1120,90 @@ function updateLanguage(lang) {
     // Update HTML lang attribute
     document.documentElement.lang = lang;
 
-    // Update active state of language buttons
-    document.querySelectorAll('.lang-btn').forEach(btn => {
-        if (btn.getAttribute('data-lang') === lang) {
-            btn.classList.add('active');
-        } else {
-            btn.classList.remove('active');
-        }
-    });
+    // Show loader
+    const loader = document.querySelector('.language-loader');
+    if (loader) loader.classList.add('active');
 
-    // Update text content based on language
-    document.querySelectorAll('[data-lang]').forEach(element => {
-        const key = element.getAttribute('data-lang');
-        if (translations[lang] && translations[lang][key]) {
-            // Use innerHTML for elements that might contain HTML
-            if (key === 'cookie-description') {
-                element.innerHTML = translations[lang][key];
+    // Create a promise to handle all updates
+    const updatePromise = new Promise((resolve) => {
+        // Update active state of language buttons
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            if (btn.getAttribute('data-lang') === lang) {
+                btn.classList.add('active');
             } else {
-                element.textContent = translations[lang][key];
+                btn.classList.remove('active');
             }
+        });
+
+        // Force a reflow to ensure DOM is ready
+        document.body.offsetHeight;
+
+        // Update text content based on language
+        const elements = document.querySelectorAll('[data-lang]');
+        elements.forEach(element => {
+            const key = element.getAttribute('data-lang');
+            if (translations[lang] && translations[lang][key]) {
+                if (key === 'cookie-description') {
+                    element.innerHTML = translations[lang][key];
+                } else {
+                    element.textContent = translations[lang][key];
+                }
+            }
+        });
+
+        // Force another reflow
+        document.body.offsetHeight;
+
+        // Update placeholders
+        document.querySelectorAll('[data-lang-placeholder]').forEach(element => {
+            const key = element.getAttribute('data-lang-placeholder');
+            if (translations[lang] && translations[lang][key]) {
+                element.placeholder = translations[lang][key];
+            }
+        });
+
+        // Update aria-labels
+        document.querySelectorAll('[data-lang-aria-label]').forEach(element => {
+            const key = element.getAttribute('data-lang-aria-label');
+            if (translations[lang] && translations[lang][key]) {
+                element.setAttribute('aria-label', translations[lang][key]);
+            }
+        });
+
+        // Store the selected language
+        const hasConsent = localStorage.getItem(COOKIE_CONSENT);
+        if (hasConsent === 'true') {
+            localStorage.setItem('selectedLanguage', lang);
         }
+
+        // Force final reflow
+        document.body.offsetHeight;
+
+        // Dispatch custom event for language change
+        document.dispatchEvent(new CustomEvent('languageChanged', { detail: { lang } }));
+
+        resolve();
     });
 
-    // Update placeholders
-    document.querySelectorAll('[data-lang-placeholder]').forEach(element => {
-        const key = element.getAttribute('data-lang-placeholder');
-        if (translations[lang] && translations[lang][key]) {
-            element.placeholder = translations[lang][key];
-        }
+    // Handle the update completion
+    updatePromise.then(() => {
+        // Double-check all translations after a short delay
+        setTimeout(() => {
+            document.querySelectorAll('[data-lang]').forEach(element => {
+                const key = element.getAttribute('data-lang');
+                if (translations[lang] && translations[lang][key]) {
+                    if (key === 'cookie-description') {
+                        element.innerHTML = translations[lang][key];
+                    } else {
+                        element.textContent = translations[lang][key];
+                    }
+                }
+            });
+
+            // Hide loader after all updates are complete
+            if (loader) loader.classList.remove('active');
+        }, 500);
     });
-
-    // Update aria-labels
-    document.querySelectorAll('[data-lang-aria-label]').forEach(element => {
-        const key = element.getAttribute('data-lang-aria-label');
-        if (translations[lang] && translations[lang][key]) {
-            element.setAttribute('aria-label', translations[lang][key]);
-        }
-    });
-
-    // Store the selected language
-    const hasConsent = localStorage.getItem(COOKIE_CONSENT);
-    if (hasConsent === 'true') {
-        localStorage.setItem('selectedLanguage', lang);
-    }
-
-    // Dispatch custom event for language change
-    document.dispatchEvent(new CustomEvent('languageChanged', { detail: { lang } }));
 }
 
 // Initialize language on page load
@@ -1371,39 +1401,39 @@ if (contactForm) {
     contactForm.addEventListener('submit', function (e) {
         e.preventDefault();
 
-    // Show the language-loader while sending
-    const loader = document.querySelector('.language-loader');
-    if (loader) loader.classList.add('active');
+        // Show the language-loader while sending
+        const loader = document.querySelector('.language-loader');
+        if (loader) loader.classList.add('active');
 
-    if (validateForm()) {
-        // Get phone dial country code if available
-        let phoneCountryCode = '';
-        if (window.phoneInput && typeof window.phoneInput.getSelectedCountryData === 'function') {
-            const countryData = window.phoneInput.getSelectedCountryData();
-            if (countryData && countryData.dialCode) {
-                phoneCountryCode = `+${countryData.dialCode}`;
+        if (validateForm()) {
+            // Get phone dial country code if available
+            let phoneCountryCode = '';
+            if (window.phoneInput && typeof window.phoneInput.getSelectedCountryData === 'function') {
+                const countryData = window.phoneInput.getSelectedCountryData();
+                if (countryData && countryData.dialCode) {
+                    phoneCountryCode = `+${countryData.dialCode}`;
+                }
             }
-        }
 
-        // Get form data
-        const formData = {
-            to_email: 'alinsafawi19@gmail.com',
-            from_name: `${document.getElementById('firstname').value} ${document.getElementById('lastname').value}`,
-            from_email: document.getElementById('email').value,
-            firstname: document.getElementById('firstname').value,
-            lastname: document.getElementById('lastname').value,
-            email: document.getElementById('email').value,
-            phone: document.getElementById('phone').value,
-            phone_country_code: phoneCountryCode,
-            service: document.getElementById('service').value,
-            budget: document.getElementById('budget').value,
-            projectDetails: document.getElementById('project-details').value,
-            website: document.getElementById('website').value,
-            deadline: document.getElementById('deadline').value,
-            hosting: document.querySelector('input[name="hosting"]:checked')?.value,
-            notes: document.getElementById('notes').value,
-            message: `New contact form submission from ${document.getElementById('firstname').value} ${document.getElementById('lastname').value}`
-        };
+            // Get form data
+            const formData = {
+                to_email: 'alinsafawi19@gmail.com',
+                from_name: `${document.getElementById('firstname').value} ${document.getElementById('lastname').value}`,
+                from_email: document.getElementById('email').value,
+                firstname: document.getElementById('firstname').value,
+                lastname: document.getElementById('lastname').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                phone_country_code: phoneCountryCode,
+                service: document.getElementById('service').value,
+                budget: document.getElementById('budget').value,
+                projectDetails: document.getElementById('project-details').value,
+                website: document.getElementById('website').value,
+                deadline: document.getElementById('deadline').value,
+                hosting: document.querySelector('input[name="hosting"]:checked')?.value,
+                notes: document.getElementById('notes').value,
+                message: `New contact form submission from ${document.getElementById('firstname').value} ${document.getElementById('lastname').value}`
+            };
 
             // Send email using EmailJS
             if (typeof emailjs !== 'undefined') {
