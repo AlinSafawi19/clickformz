@@ -1132,6 +1132,22 @@ body[lang="ar"] .language-switcher {
     box-shadow: 0 0 0 2px rgba(230, 92, 0, 0.2);
 }
 
+/* Autofill styles */
+.input:-webkit-autofill,
+.input:-webkit-autofill:hover,
+.input:-webkit-autofill:focus,
+.input:-webkit-autofill:active {
+    -webkit-text-fill-color: #dadada !important;
+    border-color: rgba(255, 255, 255, 0.1);
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+.input:-webkit-autofill:focus {
+    outline: none;
+    border-color: #e65c00;
+    box-shadow: 0 0 0 2px rgba(230, 92, 0, 0.2);
+}
+
 .input::placeholder {
     color: rgba(255, 255, 255, 0.5);
 }
