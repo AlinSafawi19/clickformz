@@ -26,7 +26,10 @@ function saveScrollPosition() {
 function restoreScrollPosition() {
     const savedPosition = localStorage.getItem(SCROLL_POSITION);
     if (savedPosition) {
-        window.scrollTo(0, parseInt(savedPosition));
+        // Use setTimeout to ensure the page is fully loaded
+        setTimeout(() => {
+            window.scrollTo(0, parseInt(savedPosition));
+        }, 100);
     }
 }
 
@@ -52,9 +55,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const hasConsent = localStorage.getItem(COOKIE_CONSENT);
     if (hasConsent && cookieBanner) {
         cookieBanner.style.display = 'none';
-        // Restore scroll position if consent is given
-        restoreScrollPosition();
     }
+
+    // Restore scroll position regardless of cookie consent
+    restoreScrollPosition();
 
     // Add scroll event listener to save position
     window.addEventListener('scroll', saveScrollPosition);
