@@ -1334,7 +1334,13 @@ textarea.input::placeholder {
 }
 
 [lang="ar"] .iti__flag-container {
-    flex-direction: row-reverse;
+    margin-right: 0;
+    margin-left: 6px;
+}
+
+[lang="ar"] .iti__dial-code {
+    margin-right: 6px;
+    margin-left: 0;
 }
 
 /* Footer Styles */
