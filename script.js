@@ -22,16 +22,25 @@ function acceptCookies() {
 
 // Reject cookies
 function rejectCookies() {
+    clearStoredData(); // Clear all stored data
     localStorage.setItem(COOKIE_CONSENT, 'false');
     cookieBanner.style.display = 'none';
 }
 
 // Initialize cookie consent
 document.addEventListener('DOMContentLoaded', () => {
+    //localStorage.clear();
     // Check if user has already made a choice
     const hasConsent = localStorage.getItem(COOKIE_CONSENT);
     if (hasConsent) {
         cookieBanner.style.display = 'none';
+    }
+
+    // Log all local storage values
+    console.log('All Local Storage Values:');
+    for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        console.log(`${key}: ${localStorage.getItem(key)}`);
     }
 
     // Event listeners for cookie buttons
@@ -343,7 +352,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // Add event listeners for debugging
         phoneInputField.addEventListener("countrychange", function () {
             const countryData = window.phoneInput.getSelectedCountryData();
-            if (countryData && countryData.iso2) {
+            const hasConsent = localStorage.getItem(COOKIE_CONSENT);
+            if (countryData && countryData.iso2 && hasConsent === 'true') {
                 localStorage.setItem('phone_country', countryData.iso2);
             }
         });
@@ -351,12 +361,16 @@ document.addEventListener('DOMContentLoaded', () => {
         // Listen for clicks on the dropdown
         document.addEventListener("click", function (e) {
             const countryElement = e.target.closest(".iti__country");
+
             if (countryElement) {
                 // Get the country code from the clicked element
                 const countryCode = countryElement.getAttribute("data-country-code");
 
                 if (countryCode) {
-                    localStorage.setItem('phone_country', countryCode);
+                    const hasConsent = localStorage.getItem(COOKIE_CONSENT);
+                    if (hasConsent === 'true') {
+                        localStorage.setItem('phone_country', countryCode);
+                    }
                     // Force update the input
                     window.phoneInput.setCountry(countryCode);
                 }
@@ -1117,7 +1131,10 @@ function updateLanguage(lang) {
     });
 
     // Store the selected language
-    localStorage.setItem('selectedLanguage', lang);
+    const hasConsent = localStorage.getItem(COOKIE_CONSENT);
+    if (hasConsent === 'true') {
+        localStorage.setItem('selectedLanguage', lang);
+    }
 
     // Dispatch custom event for language change
     document.dispatchEvent(new CustomEvent('languageChanged', { detail: { lang } }));
