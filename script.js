@@ -1057,20 +1057,19 @@ const translations = {
 
 // Language update function
 function updateLanguage(lang) {
-    // Store language preference
-    localStorage.setItem('preferred_language', lang);
-
-    // Show loader
-    const loader = document.querySelector('.language-loader');
-    if (loader) {
-        loader.classList.add('active');
-    }
-
-    // Update document language
+    // Update HTML lang attribute
     document.documentElement.lang = lang;
-    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+    
+    // Update active state of language buttons
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+        if (btn.getAttribute('data-lang') === lang) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
+    });
 
-    // Update all elements with data-lang attribute
+    // Update text content based on language
     document.querySelectorAll('[data-lang]').forEach(element => {
         const key = element.getAttribute('data-lang');
         if (translations[lang] && translations[lang][key]) {
@@ -1094,56 +1093,26 @@ function updateLanguage(lang) {
         }
     });
 
-    // Handle Select2 if it exists
-    if (serviceSelect && serviceSelect.length) {
-        serviceSelect.select2('destroy');
-        serviceSelect.select2({
-            theme: 'bootstrap-5',
-            width: '100%',
-            placeholder: function () {
-                return $(this).data('placeholder');
-            },
-            allowClear: true,
-            minimumResultsForSearch: Infinity
-        });
-    }
-
-    // Hide loader after a short delay
-    setTimeout(() => {
-        if (loader) {
-            loader.classList.remove('active');
-        }
-    }, 300);
+    // Store the selected language
+    localStorage.setItem('selectedLanguage', lang);
 }
 
-// Check for saved language preference on page load
-document.addEventListener('DOMContentLoaded', () => {
-    const savedLanguage = localStorage.getItem('preferred_language');
-    if (savedLanguage) {
-        updateLanguage(savedLanguage);
-    }
-});
+// Initialize language on page load
+document.addEventListener('DOMContentLoaded', function() {
+    // Get stored language or default to 'en'
+    const storedLang = localStorage.getItem('selectedLanguage') || 'en';
+    
+    // Update language immediately
+    updateLanguage(storedLang);
 
-// Language Switcher
-const langButtons = document.querySelectorAll('.lang-btn');
-
-langButtons.forEach(button => {
-    button.addEventListener('click', () => {
-        const lang = button.getAttribute('data-lang');
-        // Remove active class from all buttons
-        langButtons.forEach(btn => btn.classList.remove('active'));
-        // Add active class to clicked button
-        button.classList.add('active');
-        updateLanguage(lang);
+    // Add click event listeners to language buttons
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const lang = this.getAttribute('data-lang');
+            updateLanguage(lang);
+        });
     });
 });
-
-// Set initial active state for language button
-const initialLang = document.documentElement.lang || 'en';
-const activeLangButton = document.querySelector(`.lang-btn[data-lang="${initialLang}"]`);
-if (activeLangButton) {
-    activeLangButton.classList.add('active');
-}
 
 // FAQ Section
 function initializeFAQ() {
