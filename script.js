@@ -737,6 +737,27 @@ const translations = {
         'law-desc': 'These terms shall be governed by and construed in accordance with the laws of the jurisdiction in which ClickFormz is registered, without regard to its conflict of law provisions.',
         'contact-info': 'Contact Information',
         'contact-desc': 'If you have any questions about these Terms and Conditions, please contact us at:',
+        'faq-title': 'Frequently Asked Questions',
+        'web-dev-faq': 'Web Development',
+        'web-dev-q1': 'What technologies do you use for web development?',
+        'web-dev-a1': 'We use modern technologies including HTML5, CSS3, JavaScript (React, Vue.js, Angular), Node.js, and various backend frameworks. Our choice of technology depends on your specific project requirements and goals.',
+        'web-dev-q2': 'How long does it take to develop a website?',
+        'web-dev-a2': 'The timeline varies based on project complexity, features, and requirements. A basic website might take 2-4 weeks, while complex web applications can take 3-6 months. We\'ll provide a detailed timeline during our initial consultation.',
+        'ecommerce-faq': 'E-Commerce',
+        'ecommerce-q1': 'What payment gateways do you support?',
+        'ecommerce-a1': 'We integrate with major payment gateways including PayPal, Stripe, Square, and regional payment providers. We can also implement custom payment solutions based on your specific needs.',
+        'ecommerce-q2': 'Do you provide inventory management systems?',
+        'ecommerce-a2': 'Yes, we develop comprehensive inventory management systems that integrate with your e-commerce platform. This includes stock tracking, automated reordering, and detailed reporting features.',
+        'ai-faq': 'AI & Chatbots',
+        'ai-q1': 'How intelligent are your AI chatbots?',
+        'ai-a1': 'Our AI chatbots are built using advanced natural language processing and machine learning technologies. They can understand context, learn from interactions, and provide personalized responses based on your business needs.',
+        'ai-q2': 'Can chatbots integrate with my existing systems?',
+        'ai-a2': 'Yes, our chatbots can integrate with various systems including CRM, ERP, and customer support platforms. We ensure seamless integration with your existing infrastructure while maintaining security standards.',
+        'general-faq': 'General Questions',
+        'general-q1': 'What is your pricing structure?',
+        'general-a1': 'Our pricing is project-based and depends on your specific requirements. We provide detailed quotes after understanding your needs. We also offer maintenance and support packages for ongoing services.',
+        'general-q2': 'Do you provide post-launch support?',
+        'general-a2': 'Yes, we offer comprehensive post-launch support including maintenance, updates, and technical assistance. We provide different support packages to match your needs and ensure your digital solution remains optimal.',
     },
     ar: {
         'home': 'الرئيسية',
@@ -1006,6 +1027,27 @@ const translations = {
         'law-desc': 'تخضع هذه الشروط وتفسر وفقًا لقوانين الولاية القضائية التي تم تسجيل ClickFormz فيها، بغض النظر عن أحكام تعارض القوانين.',
         'contact-info': 'معلومات الاتصال',
         'contact-desc': 'إذا كان لديك أي أسئلة حول هذه الشروط والأحكام، يرجى الاتصال بنا على:',
+        'faq-title': 'الأسئلة الشائعة',
+        'web-dev-faq': 'تطوير المواقع',
+        'web-dev-q1': 'ما هي التقنيات التي تستخدمونها في تطوير المواقع؟',
+        'web-dev-a1': 'نستخدم تقنيات حديثة تشمل HTML5 و CSS3 و JavaScript (React و Vue.js و Angular) و Node.js ومختلف أطر العمل الخلفية. يعتمد اختيارنا للتقنية على متطلبات وأهداف مشروعك المحددة.',
+        'web-dev-q2': 'كم من الوقت يستغرق تطوير موقع؟',
+        'web-dev-a2': 'يختلف الجدول الزمني بناءً على تعقيد المشروع والميزات والمتطلبات. قد يستغرق الموقع الأساسي من 2-4 أسابيع، بينما قد تستغرق تطبيقات الويب المعقدة من 3-6 أشهر. سنقدم جدولاً زمنياً مفصلاً خلال استشارتنا الأولية.',
+        'ecommerce-faq': 'التجارة الإلكترونية',
+        'ecommerce-q1': 'ما هي بوابات الدفع التي تدعمونها؟',
+        'ecommerce-a1': 'نقوم بدمج بوابات الدفع الرئيسية بما في ذلك PayPal و Stripe و Square ومقدمي الدفع الإقليميين. يمكننا أيضًا تنفيذ حلول دفع مخصصة بناءً على احتياجاتك المحددة.',
+        'ecommerce-q2': 'هل تقدمون أنظمة إدارة المخزون؟',
+        'ecommerce-a2': 'نعم، نقوم بتطوير أنظمة شاملة لإدارة المخزون تتكامل مع منصة التجارة الإلكترونية الخاصة بك. يشمل ذلك تتبع المخزون وإعادة الطلب التلقائي وميزات التقارير التفصيلية.',
+        'ai-faq': 'الذكاء الاصطناعي وروبوتات المحادثة',
+        'ai-q1': 'ما مدى ذكاء روبوتات المحادثة الخاصة بكم؟',
+        'ai-a1': 'تم بناء روبوتات المحادثة الخاصة بنا باستخدام تقنيات متقدمة في معالجة اللغة الطبيعية والتعلم الآلي. يمكنها فهم السياق والتعلم من التفاعلات وتقديم ردود مخصصة بناءً على احتياجات عملك.',
+        'ai-q2': 'هل يمكن لروبوتات المحادثة التكامل مع أنظمتي الحالية؟',
+        'ai-a2': 'نعم، يمكن لروبوتات المحادثة التكامل مع مختلف الأنظمة بما في ذلك CRM و ERP ومنصات دعم العملاء. نضمن التكامل السلس مع البنية التحتية الحالية مع الحفاظ على معايير الأمان.',
+        'general-faq': 'أسئلة عامة',
+        'general-q1': 'ما هي هيكلية الأسعار لديكم؟',
+        'general-a1': 'تستند أسعارنا إلى المشروع وتعتمد على متطلباتك المحددة. نقدم عروض أسعار مفصلة بعد فهم احتياجاتك. كما نقدم حزم الصيانة والدعم للخدمات المستمرة.',
+        'general-q2': 'هل تقدمون دعم ما بعد الإطلاق؟',
+        'general-a2': 'نعم، نقدم دعمًا شاملاً لما بعد الإطلاق يشمل الصيانة والتحديثات والمساعدة التقنية. نقدم حزم دعم مختلفة لتتناسب مع احتياجاتك وضمان بقاء حلولك الرقمية في حالة مثالية.',
     }
 };
 
@@ -1097,4 +1139,36 @@ const initialLang = document.documentElement.lang || 'en';
 const activeLangButton = document.querySelector(`.lang-btn[data-lang="${initialLang}"]`);
 if (activeLangButton) {
     activeLangButton.classList.add('active');
-} 
+}
+
+// FAQ Section
+function initializeFAQ() {
+    const faqQuestions = document.querySelectorAll('.faq-question');
+    
+    faqQuestions.forEach(question => {
+        question.addEventListener('click', () => {
+            // Toggle aria-expanded attribute
+            const isExpanded = question.getAttribute('aria-expanded') === 'true';
+            question.setAttribute('aria-expanded', !isExpanded);
+            
+            // Toggle active class on answer
+            const answer = question.nextElementSibling;
+            answer.classList.toggle('active');
+            
+            // Close other answers in the same category
+            const category = question.closest('.faq-category');
+            const otherQuestions = category.querySelectorAll('.faq-question');
+            otherQuestions.forEach(otherQuestion => {
+                if (otherQuestion !== question) {
+                    otherQuestion.setAttribute('aria-expanded', 'false');
+                    otherQuestion.nextElementSibling.classList.remove('active');
+                }
+            });
+        });
+    });
+}
+
+// Initialize FAQ when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    initializeFAQ();
+}); 
