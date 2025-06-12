@@ -33,7 +33,7 @@ function restoreScrollPosition() {
 // Accept cookies
 function acceptCookies() {
     localStorage.setItem(COOKIE_CONSENT, 'true');
-    cookieBanner.style.display = 'none';
+    if (cookieBanner) cookieBanner.style.display = 'none';
     // Save current scroll position when accepting cookies
     saveScrollPosition();
 }
@@ -42,7 +42,7 @@ function acceptCookies() {
 function rejectCookies() {
     clearStoredData(); // Clear all stored data
     localStorage.setItem(COOKIE_CONSENT, 'false');
-    cookieBanner.style.display = 'none';
+    if (cookieBanner) cookieBanner.style.display = 'none';
 }
 
 // Initialize cookie consent
@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
     //localStorage.clear();
     // Check if user has already made a choice
     const hasConsent = localStorage.getItem(COOKIE_CONSENT);
-    if (hasConsent) {
+    if (hasConsent && cookieBanner) {
         cookieBanner.style.display = 'none';
         // Restore scroll position if consent is given
         restoreScrollPosition();
@@ -309,22 +309,27 @@ document.addEventListener('DOMContentLoaded', () => {
     // Handle navigation clicks with smooth scroll
     navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
-            e.preventDefault();
             const targetId = link.getAttribute('href');
-            const targetSection = document.querySelector(targetId);
+            
+            // Check if the link is to the current page
+            if (targetId.startsWith('#')) {
+                e.preventDefault();
+                const targetSection = document.querySelector(targetId);
 
-            if (targetSection) {
-                // Remove active class from all links
-                navLinks.forEach(l => l.classList.remove('active'));
-                // Add active class to clicked link
-                link.classList.add('active');
-                
-                // Smooth scroll to target
-                smoothScroll(targetSection);
-                
-                // Update URL hash without triggering scroll
-                history.pushState(null, null, targetId);
+                if (targetSection) {
+                    // Remove active class from all links
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    // Add active class to clicked link
+                    link.classList.add('active');
+                    
+                    // Smooth scroll to target
+                    smoothScroll(targetSection);
+                    
+                    // Update URL hash without triggering scroll
+                    history.pushState(null, null, targetId);
+                }
             }
+            // If it's a link to another page, let it work normally
         });
     });
 
@@ -1356,14 +1361,18 @@ function validateForm() {
     return true;
 }
 
-// Initialize EmailJS
-(function () {
-    emailjs.init("NxCZGoWrfQBLjkYnf"); // public key
-})();
+// Initialize EmailJS if it exists
+if (typeof emailjs !== 'undefined') {
+    (function () {
+        emailjs.init("NxCZGoWrfQBLjkYnf"); // public key
+    })();
+}
 
-// Add form submit event listener
-document.getElementById('contact-form').addEventListener('submit', function (e) {
-    e.preventDefault();
+// Add form submit event listener if contact form exists
+const contactForm = document.getElementById('contact-form');
+if (contactForm) {
+    contactForm.addEventListener('submit', function (e) {
+        e.preventDefault();
 
     // Show the language-loader while sending
     const loader = document.querySelector('.language-loader');
@@ -1399,63 +1408,69 @@ document.getElementById('contact-form').addEventListener('submit', function (e) 
             message: `New contact form submission from ${document.getElementById('firstname').value} ${document.getElementById('lastname').value}`
         };
 
-        // Send email using EmailJS
-        emailjs.send("service_4hi3osc", "template_w1q40ia", formData)
-            .then(function () {
-                // Hide the loader after sending
+            // Send email using EmailJS
+            if (typeof emailjs !== 'undefined') {
+                emailjs.send("service_4hi3osc", "template_w1q40ia", formData)
+                    .then(function () {
+                        // Hide the loader after sending
+                        if (loader) loader.classList.remove('active');
+                        // Show success message
+                        Swal.fire({
+                            icon: 'success',
+                            title: translations[document.documentElement.lang]['form-submitted'],
+                            text: translations[document.documentElement.lang]['thank-you-message'],
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            position: 'top-end',
+                            toast: true,
+                            width: 'auto',
+                            padding: '0.5rem',
+                            customClass: {
+                                popup: 'colored-toast'
+                            },
+                            didOpen: (toast) => {
+                                toast.addEventListener('mouseenter', Swal.stopTimer)
+                                toast.addEventListener('mouseleave', Swal.resumeTimer)
+                            },
+                            willClose: () => {
+                                // Reset form
+                                e.target.reset();
+                                // Reset Select2 if it exists
+                                if ($('#service').data('select2')) {
+                                    $('#service').val('').trigger('change');
+                                }
+                            }
+                        });
+                    })
+                    .catch(function (error) {
+                        // Hide the loader on error
+                        if (loader) loader.classList.remove('active');
+                        // Show error message
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Failed to send message. Please try again later.',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            position: 'top-end',
+                            toast: true,
+                            width: 'auto',
+                            padding: '0.5rem',
+                            customClass: {
+                                popup: 'colored-toast'
+                            }
+                        });
+                        console.error('EmailJS error:', error);
+                    });
+            } else {
+                // Hide the loader if EmailJS is not available
                 if (loader) loader.classList.remove('active');
-                // Show success message
-                Swal.fire({
-                    icon: 'success',
-                    title: translations[document.documentElement.lang]['form-submitted'],
-                    text: translations[document.documentElement.lang]['thank-you-message'],
-                    showConfirmButton: false,
-                    timer: 3000,
-                    timerProgressBar: true,
-                    position: 'top-end',
-                    toast: true,
-                    width: 'auto',
-                    padding: '0.5rem',
-                    customClass: {
-                        popup: 'colored-toast'
-                    },
-                    didOpen: (toast) => {
-                        toast.addEventListener('mouseenter', Swal.stopTimer)
-                        toast.addEventListener('mouseleave', Swal.resumeTimer)
-                    },
-                    willClose: () => {
-                        // Reset form
-                        e.target.reset();
-                        // Reset Select2 if it exists
-                        if ($('#service').data('select2')) {
-                            $('#service').val('').trigger('change');
-                        }
-                    }
-                });
-            })
-            .catch(function (error) {
-                // Hide the loader on error
-                if (loader) loader.classList.remove('active');
-                // Show error message
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'Failed to send message. Please try again later.',
-                    showConfirmButton: false,
-                    timer: 3000,
-                    timerProgressBar: true,
-                    position: 'top-end',
-                    toast: true,
-                    width: 'auto',
-                    padding: '0.5rem',
-                    customClass: {
-                        popup: 'colored-toast'
-                    }
-                });
-                console.error('EmailJS error:', error);
-            });
-    } else {
-        // Hide the loader if validation fails
-        if (loader) loader.classList.remove('active');
-    }
-});
+            }
+        } else {
+            // Hide the loader if validation fails
+            if (loader) loader.classList.remove('active');
+        }
+    });
+}
