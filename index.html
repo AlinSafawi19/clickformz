@@ -12,6 +12,7 @@
     <link href="public/css/select2-bootstrap-5-theme.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="public/css/select2-custom.css">
     <link rel="stylesheet" href="public/intl-tel-input-master/build/css/intlTelInput.css">
+    <link rel="stylesheet" href="public/css/phone-input.css">
 </head>
 
 <body>
@@ -570,28 +571,6 @@
                 },
                 allowClear: true,
                 minimumResultsForSearch: Infinity
-            });
-
-            // Initialize phone input
-            const phoneInput = window.intlTelInput(document.querySelector("#phone"), {
-                utilsScript: "public/intl-tel-input-master/build/js/utils.js",
-                preferredCountries: ["lb", "us", "gb", "ca", "ae"],
-                separateDialCode: true,
-                initialCountry: localStorage.getItem('phone_country') || "lb",
-                customContainer: "iti-custom",
-                geoIpLookup: function (callback) {
-                    fetch("public/json/json.json")
-                        .then(res => res.json())
-                        .then(data => {
-                            // Only use geoIP if no country is stored
-                            if (!localStorage.getItem('phone_country')) {
-                                callback(data.country_code);
-                            } else {
-                                callback(localStorage.getItem('phone_country'));
-                            }
-                        })
-                        .catch(() => callback("lb"));
-                }
             });
         });
     </script>
