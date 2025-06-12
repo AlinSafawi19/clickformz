@@ -1316,6 +1316,15 @@ document.getElementById('contact-form').addEventListener('submit', function (e) 
     if (loader) loader.classList.add('active');
 
     if (validateForm()) {
+        // Get phone dial country code if available
+        let phoneCountryCode = '';
+        if (window.phoneInput && typeof window.phoneInput.getSelectedCountryData === 'function') {
+            const countryData = window.phoneInput.getSelectedCountryData();
+            if (countryData && countryData.dialCode) {
+                phoneCountryCode = `+${countryData.dialCode}`;
+            }
+        }
+
         // Get form data
         const formData = {
             to_email: 'alinsafawi19@gmail.com',
@@ -1325,6 +1334,7 @@ document.getElementById('contact-form').addEventListener('submit', function (e) 
             lastname: document.getElementById('lastname').value,
             email: document.getElementById('email').value,
             phone: document.getElementById('phone').value,
+            phone_country_code: phoneCountryCode,
             service: document.getElementById('service').value,
             budget: document.getElementById('budget').value,
             projectDetails: document.getElementById('project-details').value,

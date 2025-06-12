@@ -1155,6 +1155,7 @@ body[lang="ar"] .language-switcher {
 textarea.input {
     resize: none;
     min-height: 100px;
+    font-family: Arial, sans-serif;
 }
 
 textarea.input::placeholder {
