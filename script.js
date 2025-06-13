@@ -558,7 +558,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const mobileMenu = document.querySelector('.nav-links');
     const menuOverlay = document.querySelector('.menu-overlay');
     const menuClose = document.querySelector('.menu-close');
-
+    
     function toggleMobileMenu() {
         mobileMenu.classList.toggle('active');
         menuOverlay.classList.toggle('active');
@@ -1192,9 +1192,59 @@ function initializeFAQ() {
     });
 }
 
+function initializeCubeInteraction() {
+    const cube = document.querySelector('.tech-cube');
+    if (!cube) return; // Guard clause in case cube isn't found
+    
+    let isDragging = false;
+    let previousMousePosition = { x: 0, y: 0 };
+    let rotation = { x: 0, y: 0 };
+
+    // Set initial transform
+    cube.style.transform = 'rotateX(0deg) rotateY(0deg)';
+
+    cube.addEventListener('mousedown', (e) => {
+        e.preventDefault(); // Prevent text selection
+        isDragging = true;
+        previousMousePosition = {
+            x: e.clientX,
+            y: e.clientY
+        };
+        cube.style.animation = 'none';
+    });
+
+    document.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+
+        const deltaMove = {
+            x: e.clientX - previousMousePosition.x,
+            y: e.clientY - previousMousePosition.y
+        };
+
+        rotation.x += deltaMove.y * 0.5;
+        rotation.y += deltaMove.x * 0.5;
+
+        cube.style.transform = `rotateX(${rotation.x}deg) rotateY(${rotation.y}deg)`;
+
+        previousMousePosition = {
+            x: e.clientX,
+            y: e.clientY
+        };
+    });
+
+    document.addEventListener('mouseup', () => {
+        isDragging = false;
+    });
+
+    document.addEventListener('mouseleave', () => {
+        isDragging = false;
+    });
+}
+
 // Initialize FAQ when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     initializeFAQ();
+    initializeCubeInteraction();
 });
 
 // Form validation function

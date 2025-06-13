@@ -701,6 +701,7 @@ body[lang="ar"] .language-switcher {
     align-items: center;
     height: 400px;
     perspective: 1000px;
+    transform-style: preserve-3d;
 }
 
 /* 3D Cube */
@@ -709,15 +710,23 @@ body[lang="ar"] .language-switcher {
     width: 200px;
     height: 200px;
     transform-style: preserve-3d;
+    transition: transform 0.1s ease-out;
+    cursor: grab;
     animation: rotateCube 20s infinite linear;
+}
+
+.tech-cube:active {
+    cursor: grabbing;
 }
 
 .cube-face {
     position: absolute;
     width: 200px;
     height: 200px;
-    background: rgba(230, 92, 0, 0.1);
-    border: 2px solid rgba(230, 92, 0, 0.3);
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    transform-style: preserve-3d;
+    backface-visibility: visible;
     -webkit-backdrop-filter: blur(5px);
     backdrop-filter: blur(5px);
 }
