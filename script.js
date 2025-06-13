@@ -1197,16 +1197,17 @@ function initializeCubeInteraction() {
     if (!cube) return; // Guard clause in case cube isn't found
     
     let isDragging = false;
-    let previousMousePosition = { x: 0, y: 0 };
+    let previousPosition = { x: 0, y: 0 };
     let rotation = { x: 0, y: 0 };
 
     // Set initial transform
     cube.style.transform = 'rotateX(0deg) rotateY(0deg)';
 
+    // Mouse events
     cube.addEventListener('mousedown', (e) => {
         e.preventDefault(); // Prevent text selection
         isDragging = true;
-        previousMousePosition = {
+        previousPosition = {
             x: e.clientX,
             y: e.clientY
         };
@@ -1217,8 +1218,8 @@ function initializeCubeInteraction() {
         if (!isDragging) return;
 
         const deltaMove = {
-            x: e.clientX - previousMousePosition.x,
-            y: e.clientY - previousMousePosition.y
+            x: e.clientX - previousPosition.x,
+            y: e.clientY - previousPosition.y
         };
 
         rotation.x += deltaMove.y * 0.5;
@@ -1226,7 +1227,7 @@ function initializeCubeInteraction() {
 
         cube.style.transform = `rotateX(${rotation.x}deg) rotateY(${rotation.y}deg)`;
 
-        previousMousePosition = {
+        previousPosition = {
             x: e.clientX,
             y: e.clientY
         };
@@ -1237,6 +1238,47 @@ function initializeCubeInteraction() {
     });
 
     document.addEventListener('mouseleave', () => {
+        isDragging = false;
+    });
+
+    // Touch events
+    cube.addEventListener('touchstart', (e) => {
+        e.preventDefault(); // Prevent scrolling
+        isDragging = true;
+        const touch = e.touches[0];
+        previousPosition = {
+            x: touch.clientX,
+            y: touch.clientY
+        };
+        cube.style.animation = 'none';
+    });
+
+    document.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+        e.preventDefault(); // Prevent scrolling
+
+        const touch = e.touches[0];
+        const deltaMove = {
+            x: touch.clientX - previousPosition.x,
+            y: touch.clientY - previousPosition.y
+        };
+
+        rotation.x += deltaMove.y * 0.5;
+        rotation.y += deltaMove.x * 0.5;
+
+        cube.style.transform = `rotateX(${rotation.x}deg) rotateY(${rotation.y}deg)`;
+
+        previousPosition = {
+            x: touch.clientX,
+            y: touch.clientY
+        };
+    });
+
+    document.addEventListener('touchend', () => {
+        isDragging = false;
+    });
+
+    document.addEventListener('touchcancel', () => {
         isDragging = false;
     });
 }
