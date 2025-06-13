@@ -891,27 +891,36 @@ body[lang="ar"] .language-switcher {
 }
 
 @keyframes float {
-    0%, 100% {
+
+    0%,
+    100% {
         transform: translateY(0);
     }
+
     50% {
         transform: translateY(-20px);
     }
 }
 
 @keyframes glow {
-    0%, 100% {
+
+    0%,
+    100% {
         box-shadow: 0 0 5px rgba(230, 92, 0, 0.5);
     }
+
     50% {
         box-shadow: 0 0 20px rgba(230, 92, 0, 0.8);
     }
 }
 
 @keyframes pulse {
-    0%, 100% {
+
+    0%,
+    100% {
         transform: scale(1);
     }
+
     50% {
         transform: scale(1.05);
     }
@@ -921,6 +930,7 @@ body[lang="ar"] .language-switcher {
     0% {
         stroke-dashoffset: 100;
     }
+
     100% {
         stroke-dashoffset: 0;
     }
@@ -1592,11 +1602,11 @@ textarea.input::placeholder {
         justify-content: center;
         gap: 0.75rem;
     }
-    
+
     .footer-legal a:not(:last-child)::after {
         right: -0.5rem;
     }
-    
+
     .footer-legal a {
         font-size: 0.9rem;
     }
@@ -1763,7 +1773,7 @@ textarea.input::placeholder {
 
 .recent-searches h3 {
     font-size: 1.2rem;
-    color: var(--text-color);
+    color: #ccc;
     margin-bottom: 1rem;
     font-weight: 600;
 }
@@ -1781,7 +1791,7 @@ textarea.input::placeholder {
     padding: 0.75rem 1rem;
     background: rgba(255, 255, 255, 0.05);
     border-radius: 8px;
-    color: var(--text-color);
+    color: #f5f5f5;
     text-decoration: none;
     transition: all 0.3s ease;
 }
@@ -2210,11 +2220,13 @@ textarea.input::placeholder {
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    display: none; /* Hidden by default */
+    display: none;
+    /* Hidden by default */
 }
 
 .cookie-banner.active {
-    display: block; /* Show when active */
+    display: block;
+    /* Show when active */
 }
 
 .cookie-content {
@@ -2598,14 +2610,14 @@ textarea.input::placeholder {
 }
 
 /* Cookie Policy Styles */
-.cookie-policy-container {
+.policy-container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 100px 20px;
 }
 
 .policy-content {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(88, 84, 84, 0.168);
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
     border-radius: 15px;
@@ -2656,7 +2668,7 @@ textarea.input::placeholder {
 }
 
 .cookie-category li {
-    color: var(--text-color);
+    color: #f5f5f5;
     margin-bottom: 10px;
     padding-left: 25px;
     position: relative;
@@ -2664,7 +2676,7 @@ textarea.input::placeholder {
 
 .cookie-category li::before {
     content: "•";
-    color: var(--primary-color);
+    color: #4CAF50;
     position: absolute;
     left: 0;
 }
@@ -2699,7 +2711,7 @@ textarea.input::placeholder {
 }
 
 @media (max-width: 768px) {
-    .cookie-policy-container {
+    .policy-container {
         padding: 40px 20px;
     }
 
@@ -2717,5 +2729,93 @@ textarea.input::placeholder {
 
     .cookie-actions .cookie-btn {
         width: 100%;
+    }
+}
+
+.contact-info-list {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0;
+}
+
+.contact-info-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding: 0.75rem 1rem;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.contact-info-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: translateX(5px);
+}
+
+.contact-info-item i {
+    font-size: 1.2rem;
+    margin-right: 1rem;
+    color: #4CAF50;
+}
+
+.contact-info-item span {
+    font-size: 1rem;
+    color: #ccc;
+}
+
+[lang="ar"] .contact-info-item {
+    flex-direction: row-reverse;
+    text-align: right;
+}
+
+[lang="ar"] .contact-info-item i {
+    margin-right: 0;
+    margin-left: 1rem;
+    order: 2;
+}
+
+[lang="ar"] .contact-info-item .contact-link {
+    order: 1;
+}
+
+[lang="ar"] .contact-info-item:hover {
+    transform: translateX(-5px);
+}
+
+.contact-link {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    transition: all 0.3s ease;
+}
+
+.contact-link:hover {
+    color: #4CAF50;
+}
+
+.contact-info-item:hover .contact-link {
+    color: #4CAF50;
+}
+
+@media (max-width: 768px) {
+    .contact-info-item {
+        padding: 0.5rem 0.75rem;
+    }
+
+    .contact-info-item i {
+        font-size: 1rem;
+        margin-right: 0.75rem;
+    }
+
+    .contact-info-item span {
+        font-size: 0.9rem;
+    }
+
+    [lang="ar"] .contact-info-item i {
+        margin-right: 0;
+        margin-left: 0.75rem;
     }
 }
