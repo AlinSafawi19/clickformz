@@ -74,8 +74,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (acceptBtn) acceptBtn.addEventListener('click', acceptCookies);
     if (rejectBtn) rejectBtn.addEventListener('click', rejectCookies);
 
-    // Initialize particles.js only if it's available
-    if (typeof particlesJS === 'function') {
+    // Initialize particles.js only if it's available and the element exists
+    if (typeof particlesJS === 'function' && document.getElementById('particles-js')) {
         particlesJS('particles-js', {
             particles: {
                 number: {
