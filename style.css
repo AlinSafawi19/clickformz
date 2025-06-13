@@ -2596,3 +2596,126 @@ textarea.input::placeholder {
 .colored-toast .swal2-icon.swal2-success .swal2-success-ring {
     border-color: #4CAF50 !important;
 }
+
+/* Cookie Policy Styles */
+.cookie-policy-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 100px 20px;
+}
+
+.policy-content {
+    background: rgba(255, 255, 255, 0.1);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 40px;
+    margin-top: 40px;
+}
+
+.policy-content h3 {
+    color: #ccc;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.policy-content h4 {
+    color: #ccc;
+    font-size: 20px;
+    margin: 30px 0 15px;
+}
+
+.policy-content p {
+    color: #ccc;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.cookie-categories {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin: 40px 0;
+}
+
+.cookie-category {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    padding: 25px;
+    transition: transform 0.3s ease;
+}
+
+.cookie-category:hover {
+    transform: translateY(-5px);
+}
+
+.cookie-category ul {
+    list-style: none;
+    padding: 0;
+    margin: 15px 0 0;
+}
+
+.cookie-category li {
+    color: var(--text-color);
+    margin-bottom: 10px;
+    padding-left: 25px;
+    position: relative;
+}
+
+.cookie-category li::before {
+    content: "•";
+    color: var(--primary-color);
+    position: absolute;
+    left: 0;
+}
+
+.cookie-controls {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    padding: 25px;
+    margin: 40px 0;
+}
+
+.cookie-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.cookie-updates {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    padding: 25px;
+}
+
+[lang="ar"] .cookie-category li {
+    padding-left: 0;
+    padding-right: 25px;
+}
+
+[lang="ar"] .cookie-category li::before {
+    left: auto;
+    right: 0;
+}
+
+@media (max-width: 768px) {
+    .cookie-policy-container {
+        padding: 40px 20px;
+    }
+
+    .policy-content {
+        padding: 25px;
+    }
+
+    .cookie-categories {
+        grid-template-columns: 1fr;
+    }
+
+    .cookie-actions {
+        flex-direction: column;
+    }
+
+    .cookie-actions .cookie-btn {
+        width: 100%;
+    }
+}
