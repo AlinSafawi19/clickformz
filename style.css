@@ -2248,13 +2248,13 @@ textarea.input::placeholder {
 }
 
 .cookie-header p a {
-    color: #4a90e2;
+    color: #4CAF50;
     text-decoration: none;
     transition: color 0.3s ease;
 }
 
 .cookie-header p a:hover {
-    color: #2c6cb0;
+    color: #45a049;
     text-decoration: underline;
 }
 
