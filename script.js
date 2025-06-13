@@ -36,7 +36,7 @@ function restoreScrollPosition() {
 // Accept cookies
 function acceptCookies() {
     localStorage.setItem(COOKIE_CONSENT, 'true');
-    if (cookieBanner) cookieBanner.style.display = 'none';
+    if (cookieBanner) cookieBanner.classList.remove('active');
     // Save current scroll position when accepting cookies
     saveScrollPosition();
 }
@@ -45,7 +45,7 @@ function acceptCookies() {
 function rejectCookies() {
     clearStoredData(); // Clear all stored data
     localStorage.setItem(COOKIE_CONSENT, 'false');
-    if (cookieBanner) cookieBanner.style.display = 'none';
+    if (cookieBanner) cookieBanner.classList.remove('active');
 }
 
 // Initialize cookie consent
@@ -53,8 +53,8 @@ document.addEventListener('DOMContentLoaded', () => {
     //localStorage.clear();
     // Check if user has already made a choice
     const hasConsent = localStorage.getItem(COOKIE_CONSENT);
-    if (hasConsent && cookieBanner) {
-        cookieBanner.style.display = 'none';
+    if (!hasConsent && cookieBanner) {
+        cookieBanner.classList.add('active');
     }
 
     // Restore scroll position regardless of cookie consent

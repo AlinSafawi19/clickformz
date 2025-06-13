@@ -2205,19 +2205,11 @@ textarea.input::placeholder {
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.1);
+    display: none; /* Hidden by default */
 }
 
-.cookie-banner::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(90deg,
-            transparent 0%,
-            rgba(230, 92, 0, 0.5) 50%,
-            transparent 100%);
+.cookie-banner.active {
+    display: block; /* Show when active */
 }
 
 .cookie-content {
