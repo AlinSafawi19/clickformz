@@ -1565,6 +1565,11 @@ textarea.input::placeholder {
     opacity: 0.5;
 }
 
+[lang="ar"] .footer-legal a:not(:last-child)::after {
+    right: auto;
+    left: -0.75rem;
+}
+
 .footer-legal a:hover {
     color: #e65c00;
 }
